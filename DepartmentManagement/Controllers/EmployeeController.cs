@@ -159,7 +159,7 @@ namespace DepartmentManagement.Controllers
         public async Task<IActionResult> RemoveEmployees(int id, EmployeePositionViewModel model)
         {
             int newsId = model.Employee.Id;
-            var item = await _db.EmployeePositions.FirstOrDefaultAsync(x => x.Employee_Id == id && x.Employee_Id == newsId);
+            var item = await _db.EmployeePositions.FirstOrDefaultAsync(x => x.Position_Id == id && x.Employee_Id == newsId);
 
             _db.EmployeePositions.Remove(item);
             await _db.SaveChangesAsync();
