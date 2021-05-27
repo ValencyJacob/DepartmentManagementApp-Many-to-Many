@@ -1,12 +1,35 @@
-﻿@model Employee
+﻿@model EmployeePositionViewModel
 
 <div class="container">
 
     <div class="card">
         <div class="card-header">
-            @Model.FullName
+            @Model.Employee.FullName
         </div>
+        @if (Model.EmployeePositionList != null)
+        {
+            <div class="card-body">
+                @foreach (var emp in Model.EmployeePositionList)
+                {
+                    <p>
+                        <span class="badge badge-warning">
+                            @emp.Position.Name
+                        </span>
+                    </p>
+                }
+            </div>
+        }
+        else
+        {
+            <p>
+                No Position
+            </p>
+        }
     </div>
+
+    <a class="btn btn-primary text-white" asp-action="managepositions" asp-route-Id="@Model.Employee.Id">
+        Position
+    </a>
 
     <a asp-action="Index" class="btn btn-primary">
         Back

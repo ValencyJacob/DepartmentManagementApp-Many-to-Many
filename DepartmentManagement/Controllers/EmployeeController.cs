@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Models;
+using Models.ViewModels;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -72,17 +74,31 @@ namespace DepartmentManagement.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            var model = await _db.Employees
-                .FirstOrDefaultAsync(x => x.Id == id);
+            var model = new EmployeePositionViewModel
+            {
+                EmployeePositionList = await _db.EmployeePositions.Include(x => x.Position)
+                .Include(x => x.Employee).Where(x => x.Employee_Id == id).ToListAsync(),
 
-            if (model != null)
+                EmployeePositions = new EmployeePosition()
+                {
+                    Employee_Id = id
+                },
+
+                Employee = await _db.Employees.FirstOrDefaultAsync(x => x.Id == id)
+            };
+
+            List<int> tempAssignedList = model.EmployeePositionList.Select(x => x.Position_Id).ToList();
+
+            // Get all items who's Id isn't in tempAuthorsAssignedList and tempCitiesAssignedList
+            var tempList = await _db.Positions.Where(x => !tempAssignedList.Contains(x.Id)).ToListAsync();
+
+            model.EmployeePositionListDropDown = tempList.Select(x => new SelectListItem
             {
-                return View(model);
-            }
-            else
-            {
-                return NotFound();
-            }
+                Text = x.Name,
+                Value = x.Id.ToString()
+            });
+
+            return View(model);
         }
 
         public async Task<IActionResult> Delete(int id)
@@ -96,6 +112,59 @@ namespace DepartmentManagement.Controllers
             }
 
             return RedirectToAction("Index");
+        }
+
+        // Many to Many Relationship methods
+        public async Task<IActionResult> ManagePositions(int id)
+        {
+            var model = new EmployeePositionViewModel
+            {
+                EmployeePositionList = await _db.EmployeePositions.Include(x => x.Position)
+                .Include(x => x.Employee).Where(x => x.Employee_Id == id).ToListAsync(),
+
+                EmployeePositions = new EmployeePosition()
+                {
+                    Employee_Id = id
+                },
+
+                Employee = await _db.Employees.FirstOrDefaultAsync(x => x.Id == id)
+            };
+
+            List<int> tempAssignedList = model.EmployeePositionList.Select(x => x.Position_Id).ToList();
+
+            // Get all items who's Id isn't in tempAuthorsAssignedList and tempCitiesAssignedList
+            var tempEmployeesList = await _db.Positions.Where(x => !tempAssignedList.Contains(x.Id)).ToListAsync();
+
+            model.EmployeePositionListDropDown = tempEmployeesList.Select(x => new SelectListItem
+            {
+                Text = x.Name,
+                Value = x.Id.ToString()
+            });
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ManagePositions(EmployeePositionViewModel model)
+        {
+            if (model.EmployeePositions.Employee_Id != 0 && model.EmployeePositions.Position_Id != 0)
+            {
+                _db.EmployeePositions.Add(model.EmployeePositions);
+                await _db.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(ManagePositions), new { @id = model.EmployeePositions.Employee_Id });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveEmployees(int id, EmployeePositionViewModel model)
+        {
+            int newsId = model.Employee.Id;
+            var item = await _db.EmployeePositions.FirstOrDefaultAsync(x => x.Employee_Id == id && x.Employee_Id == newsId);
+
+            _db.EmployeePositions.Remove(item);
+            await _db.SaveChangesAsync();
+
+            return RedirectToAction(nameof(ManagePositions), new { @id = newsId });
         }
         #endregion
     }

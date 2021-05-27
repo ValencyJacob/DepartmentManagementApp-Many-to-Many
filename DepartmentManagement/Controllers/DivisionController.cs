@@ -73,20 +73,6 @@ namespace DepartmentManagement.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            /*
-            var model = await _db.Divisions.Include(x => x.Department)
-                .FirstOrDefaultAsync(x => x.Id == id);
-
-            if (model != null)
-            {
-                return View(model);
-            }
-            else
-            {
-                return NotFound();
-            }
-            */
-
             var model = new DivisionEmployeeViewModel
             {
                 DivisionEmployeeList = await _db.DivisionEmployeesModel.Include(x => x.Employee)
@@ -100,12 +86,12 @@ namespace DepartmentManagement.Controllers
                 Division = await _db.Divisions.FirstOrDefaultAsync(x => x.Id == id)
             };
 
-            List<int> tempAuthorsAssignedList = model.DivisionEmployeeList.Select(x => x.Employee_Id).ToList();
+            List<int> tempAssignedList = model.DivisionEmployeeList.Select(x => x.Employee_Id).ToList();
 
             // Get all items who's Id isn't in tempAuthorsAssignedList and tempCitiesAssignedList
-            var tempEmployeesList = await _db.Employees.Where(x => !tempAuthorsAssignedList.Contains(x.Id)).ToListAsync();
+            var tempList = await _db.Employees.Where(x => !tempAssignedList.Contains(x.Id)).ToListAsync();
 
-            model.DivisionEmployeeListDropDown = tempEmployeesList.Select(x => new SelectListItem
+            model.DivisionEmployeeListDropDown = tempList.Select(x => new SelectListItem
             {
                 Text = x.FullName,
                 Value = x.Id.ToString()
@@ -172,9 +158,9 @@ namespace DepartmentManagement.Controllers
         public async Task<IActionResult> RemoveEmployees(int id, DivisionEmployeeViewModel model)
         {
             int newsId = model.Division.Id;
-            var employees = await _db.DivisionEmployeesModel.FirstOrDefaultAsync(x => x.Employee_Id == id && x.Division_Id == newsId);
+            var item = await _db.DivisionEmployeesModel.FirstOrDefaultAsync(x => x.Employee_Id == id && x.Division_Id == newsId);
 
-            _db.DivisionEmployeesModel.Remove(employees);
+            _db.DivisionEmployeesModel.Remove(item);
             await _db.SaveChangesAsync();
 
             return RedirectToAction(nameof(ManageEmployees), new { @id = newsId });
