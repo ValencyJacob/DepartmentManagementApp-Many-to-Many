@@ -1,0 +1,39 @@
+﻿@model DivisionEmployeeViewModel
+
+<div class="container">
+
+    <div class="card">
+        <div class="card-header">
+            @Model.Division.Name
+        </div>
+        <div class="card-body">
+            @if (Model.DivisionEmployeeList != null)
+            {
+                <div class="card-body">
+                    @foreach (var emp in Model.DivisionEmployeeList)
+                    {
+                        <p>
+                            <span class="badge badge-warning">
+                                @emp.Employee.FullName
+                            </span>
+                        </p>
+                    }
+                </div>
+            }
+            else
+            {
+                <p>
+                    No Employee
+                </p>
+            }
+        </div>
+    </div>
+
+    <a class="btn btn-primary text-white" asp-action="manageemployees" asp-route-Id="@Model.Division.Id">
+        Employees
+    </a>
+    <a asp-action="Index" class="btn btn-primary">
+        Back
+    </a>
+
+</div>  
