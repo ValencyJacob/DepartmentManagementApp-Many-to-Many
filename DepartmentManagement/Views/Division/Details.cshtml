@@ -14,7 +14,9 @@
                     {
                         <p>
                             <span class="badge badge-warning">
-                                @emp.Employee.FullName
+                                <a asp-controller="employee" asp-action="details" asp-route-Id="@emp.Employee.Id">
+                                    @emp.Employee.FullName
+                                </a>
                             </span>
                         </p>
                     }
