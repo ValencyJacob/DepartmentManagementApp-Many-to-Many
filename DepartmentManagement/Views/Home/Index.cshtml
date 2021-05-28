@@ -1,6 +1,30 @@
-﻿@{
+﻿@model IEnumerable<Department>
+
+@{
     ViewData["Title"] = "Home Page";
 }
+
+<div class="row pb-5">
+    @foreach (var item in Model)
+    {
+        <div class="col-lg-4 col-md-9">
+            <a asp-controller="Department" asp-action="Details" class="btn btn-outline-dark p-2 m-2" style="text-decoration:none;
+                    box-shadow: 1px 1px 8px 0px rgba(0,0,0,0.71);" asp-route-id="@item.Id">
+                <div class="card text-black-50">
+                    <div class="card-header">
+                        <p>@item.Name</p>
+                    </div>
+
+                    @*<img class="card-img-top" src="@item.ImageUrl" alt="Card image cap">*@
+
+                    <div class="card-body">
+                        Description or address
+                    </div>
+                </div>
+            </a>
+        </div>
+    }
+</div>
 
 <div class="card p-2">
     <a class="btn btn-outline-primary" asp-controller="department" asp-action="index">Department</a>

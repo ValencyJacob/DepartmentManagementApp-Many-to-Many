@@ -15,33 +15,36 @@
     <div>
         @if (Model.Count() > 0)
         {
-            <table class="table table-striped border">
-                <tr class="table-secondary">
-                    <th>
-                        Department
-                    </th>
-                    <th></th>
-                </tr>
+            <div class="row pb-5">
                 @foreach (var item in Model)
                 {
-                    <tr>
-                        <td>
-                            @item.Name
-                        </td>
-                        <td>
-                            <a class="btn btn-primary text-white" asp-action="Upsert" asp-route-Id="@item.Id">
-                                Edit
-                            </a>
-                            <a class="btn btn-primary text-white" asp-action="Details" asp-route-Id="@item.Id">
-                                Details
-                            </a>
-                            <a class="btn btn-danger text-white" asp-action="Delete" asp-route-Id="@item.Id">
-                                Delete
-                            </a>
-                        </td>
-                    </tr>
+                    <div class="col-lg-4 col-md-9 mb-4">
+                        <div class="card text-black-50">
+                            <div class="card-header">
+                                <p>@item.Name</p>
+                            </div>
+
+                            @*<img class="card-img-top" src="@item.ImageUrl" alt="Card image cap">*@
+
+                            <div class="card-body">
+                                Description or address
+                            </div>
+
+                            <div class="card-footer">
+                                <a class="btn btn-primary text-white" asp-action="Upsert" asp-route-Id="@item.Id">
+                                    Edit
+                                </a>
+                                <a class="btn btn-primary text-white" asp-action="Details" asp-route-Id="@item.Id">
+                                    Details
+                                </a>
+                                <a class="btn btn-danger text-white" asp-action="Delete" asp-route-Id="@item.Id">
+                                    Delete
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 }
-            </table>
+            </div>
         }
         else
         {
