@@ -85,6 +85,11 @@ namespace DepartmentManagement.Controllers
                 DivisionEmployeeList = await _db.DivisionEmployeesModel.Include(x => x.Employee)
                 .Include(x => x.Division).Where(x => x.Division_Id == id).ToListAsync(),
 
+                // Get only 1 obj
+                EmployeePositionList = await _db.EmployeePositions.Include(x => x.Position)
+                .Include(x => x.Employee).Where(x => x.Employee_Id == id).ToListAsync(),
+                //
+
                 DivisionEmployees = new DivisionEmployee()
                 {
                     Division_Id = id
@@ -94,9 +99,10 @@ namespace DepartmentManagement.Controllers
             };
 
             List<int> tempAssignedList = model.DivisionEmployeeList.Select(x => x.Employee_Id).ToList();
+            List<int> tempAssignedList2 = model.EmployeePositionList.Select(x => x.Position_Id).ToList(); // ? Get only 1 obj
 
             // Get all items who's Id isn't in tempAuthorsAssignedList and tempCitiesAssignedList
-            var tempList = await _db.Employees.Where(x => !tempAssignedList.Contains(x.Id)).ToListAsync();
+            var tempList = await _db.Employees.Where(x => !tempAssignedList.Contains(x.Id)).Where(x => !tempAssignedList2.Contains(x.Id)).ToListAsync();
 
             model.DivisionEmployeeListDropDown = tempList.Select(x => new SelectListItem
             {
