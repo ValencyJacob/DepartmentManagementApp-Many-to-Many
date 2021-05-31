@@ -1,21 +1,21 @@
-﻿@model DepartmentDivisionViewModel
+﻿@model Department
 
 <div class="container">
 
     <div class="card">
         <div class="card-header">
-            @Model.Department.Name
+            @Model.Name
         </div>
         <div class="card-body">
-            @if (Model.DepartmentDivisionList != null)
+            @if (Model.Divisions != null)
             {
                 <div class="card-body">
-                    @foreach (var emp in Model.DepartmentDivisionList)
+                    @foreach (var emp in Model.Divisions)
                     {
                         <p>
                             <span class="badge badge-warning">
-                                <a asp-controller="division" asp-action="details" asp-route-Id="@emp.Division.Id">
-                                    @emp.Division.Name
+                                <a asp-controller="division" asp-action="details" asp-route-Id="@emp.Id">
+                                    @emp.Name
                                 </a>
                             </span>
                         </p>
@@ -31,9 +31,6 @@
         </div>
     </div>
 
-    <a class="btn btn-primary text-white" asp-action="managedivision" asp-route-Id="@Model.Department.Id">
-        Divisions
-    </a>
     <a asp-action="Index" class="btn btn-primary">
         Back
     </a>

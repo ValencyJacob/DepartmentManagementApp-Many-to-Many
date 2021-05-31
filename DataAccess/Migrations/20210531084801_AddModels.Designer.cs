@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210527063422_AddPositionForEmp")]
-    partial class AddPositionForEmp
+    [Migration("20210531084801_AddModels")]
+    partial class AddModels
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,7 +20,7 @@ namespace DataAccess.Migrations
                 .HasAnnotation("ProductVersion", "5.0.6")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Models.Division", b =>
+            modelBuilder.Entity("Models.Department", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -31,6 +31,26 @@ namespace DataAccess.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.ToTable("Departments");
+                });
+
+            modelBuilder.Entity("Models.Division", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DepartmentId");
 
                     b.ToTable("Divisions");
                 });
@@ -95,6 +115,17 @@ namespace DataAccess.Migrations
                     b.ToTable("Positions");
                 });
 
+            modelBuilder.Entity("Models.Division", b =>
+                {
+                    b.HasOne("Models.Department", "Department")
+                        .WithMany("Divisions")
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Department");
+                });
+
             modelBuilder.Entity("Models.DivisionEmployee", b =>
                 {
                     b.HasOne("Models.Division", "Division")
@@ -131,6 +162,11 @@ namespace DataAccess.Migrations
                     b.Navigation("Employee");
 
                     b.Navigation("Position");
+                });
+
+            modelBuilder.Entity("Models.Department", b =>
+                {
+                    b.Navigation("Divisions");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,11 +1,7 @@
 ﻿using DataAccess;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Models;
-using Models.ViewModels;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace DepartmentManagement.Controllers
@@ -19,7 +15,6 @@ namespace DepartmentManagement.Controllers
             _db = db;
         }
 
-        #region Fixed
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -74,31 +69,17 @@ namespace DepartmentManagement.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            var model = new DepartmentDivisionViewModel
+            var model = await _db.Departments.Include(x => x.Divisions)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (model != null)
             {
-                DepartmentDivisionList = await _db.DepartmentDivisionsModel.Include(x => x.Division)
-                .Include(x => x.Department).Where(x => x.Department_Id == id).ToListAsync(),
-
-                DepartmentDivisions = new DepartmentDivision()
-                {
-                    Department_Id = id
-                },
-
-                Department = await _db.Departments.FirstOrDefaultAsync(x => x.Id == id)
-            };
-
-            List<int> tempAssignedList = model.DepartmentDivisionList.Select(x => x.Division_Id).ToList();
-
-            // Get all items who's Id isn't in tempAuthorsAssignedList and tempCitiesAssignedList
-            var tempList = await _db.Positions.Where(x => !tempAssignedList.Contains(x.Id)).ToListAsync();
-
-            model.DepartmentDivisionListDropDown = tempList.Select(x => new SelectListItem
+                return View(model);
+            }
+            else
             {
-                Text = x.Name,
-                Value = x.Id.ToString()
-            });
-
-            return View(model);
+                return NotFound();
+            }
         }
 
         public async Task<IActionResult> Delete(int id)
@@ -113,59 +94,5 @@ namespace DepartmentManagement.Controllers
 
             return RedirectToAction("Index");
         }
-
-        // Many to Many Relationship methods
-        public async Task<IActionResult> ManageDivision(int id)
-        {
-            var model = new DepartmentDivisionViewModel
-            {
-                DepartmentDivisionList = await _db.DepartmentDivisionsModel.Include(x => x.Division)
-                .Include(x => x.Department).Where(x => x.Department_Id == id).ToListAsync(),
-
-                DepartmentDivisions = new DepartmentDivision()
-                {
-                    Department_Id = id
-                },
-
-                Department = await _db.Departments.FirstOrDefaultAsync(x => x.Id == id)
-            };
-
-            List<int> tempAssignedList = model.DepartmentDivisionList.Select(x => x.Division_Id).ToList();
-
-            // Get all items who's Id isn't in tempAuthorsAssignedList and tempCitiesAssignedList
-            var tempList = await _db.Divisions.Where(x => !tempAssignedList.Contains(x.Id)).ToListAsync();
-
-            model.DepartmentDivisionListDropDown = tempList.Select(x => new SelectListItem
-            {
-                Text = x.Name,
-                Value = x.Id.ToString()
-            });
-            return View(model);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> ManageDivision(DepartmentDivisionViewModel model)
-        {
-            if (model.DepartmentDivisions.Department_Id != 0 && model.DepartmentDivisions.Division_Id != 0)
-            {
-                _db.DepartmentDivisionsModel.Add(model.DepartmentDivisions);
-                await _db.SaveChangesAsync();
-            }
-
-            return RedirectToAction(nameof(ManageDivision), new { @id = model.DepartmentDivisions.Department_Id });
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> RemoveDivision(int id, DepartmentDivisionViewModel model)
-        {
-            int newsId = model.Department.Id;
-            var item = await _db.DepartmentDivisionsModel.FirstOrDefaultAsync(x => x.Division_Id == id && x.Department_Id == newsId);
-
-            _db.DepartmentDivisionsModel.Remove(item);
-            await _db.SaveChangesAsync();
-
-            return RedirectToAction(nameof(ManageDivision), new { @id = newsId });
-        }
-        #endregion
-    }
+    } 
 }

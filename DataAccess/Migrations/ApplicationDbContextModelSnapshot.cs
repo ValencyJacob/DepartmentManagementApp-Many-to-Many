@@ -33,21 +33,6 @@ namespace DataAccess.Migrations
                     b.ToTable("Departments");
                 });
 
-            modelBuilder.Entity("Models.DepartmentDivision", b =>
-                {
-                    b.Property<int>("Division_Id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Department_Id")
-                        .HasColumnType("int");
-
-                    b.HasKey("Division_Id", "Department_Id");
-
-                    b.HasIndex("Department_Id");
-
-                    b.ToTable("DepartmentDivisionsModel");
-                });
-
             modelBuilder.Entity("Models.Division", b =>
                 {
                     b.Property<int>("Id")
@@ -55,10 +40,15 @@ namespace DataAccess.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DepartmentId");
 
                     b.ToTable("Divisions");
                 });
@@ -123,23 +113,15 @@ namespace DataAccess.Migrations
                     b.ToTable("Positions");
                 });
 
-            modelBuilder.Entity("Models.DepartmentDivision", b =>
+            modelBuilder.Entity("Models.Division", b =>
                 {
                     b.HasOne("Models.Department", "Department")
-                        .WithMany()
-                        .HasForeignKey("Department_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Models.Division", "Division")
-                        .WithMany()
-                        .HasForeignKey("Division_Id")
+                        .WithMany("Divisions")
+                        .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Department");
-
-                    b.Navigation("Division");
                 });
 
             modelBuilder.Entity("Models.DivisionEmployee", b =>
@@ -178,6 +160,11 @@ namespace DataAccess.Migrations
                     b.Navigation("Employee");
 
                     b.Navigation("Position");
+                });
+
+            modelBuilder.Entity("Models.Department", b =>
+                {
+                    b.Navigation("Divisions");
                 });
 #pragma warning restore 612, 618
         }

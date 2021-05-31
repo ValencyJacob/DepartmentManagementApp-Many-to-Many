@@ -31,7 +31,14 @@ namespace DepartmentManagement.Controllers
         [HttpGet]
         public async Task<IActionResult> Upsert(int? id)
         {
-            var model = new Division();
+            var model = new DivisionViewModel();
+
+            // SelectListUtem for DropDown. Logic locate in App.Models/Models/ViewModels/NewsViewModel
+            model.DepartmentList = _db.Departments.Select(x => new SelectListItem
+            {
+                Text = x.Name,
+                Value = x.Id.ToString()
+            });
 
             // Create
             if (id == null)
@@ -40,7 +47,7 @@ namespace DepartmentManagement.Controllers
             }
 
             // Edit
-            model = await _db.Divisions.FirstOrDefaultAsync(x => x.Id == id);
+            model.Division = await _db.Divisions.FirstOrDefaultAsync(x => x.Id == id);
 
             if (model == null)
             {
@@ -52,17 +59,17 @@ namespace DepartmentManagement.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Upsert(Division model)
+        public async Task<IActionResult> Upsert(DivisionViewModel model)
         {
-            if (model.Id == 0)
+            if (model.Division.Id == 0)
             {
                 // Create
-                await _db.Divisions.AddAsync(model);
+                await _db.Divisions.AddAsync(model.Division);
             }
             else
             {
                 // Update
-                _db.Divisions.Update(model);
+                _db.Divisions.Update(model.Division);
             }
 
             await _db.SaveChangesAsync();
