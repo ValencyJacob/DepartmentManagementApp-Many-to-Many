@@ -6,6 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
+using DataAccess.Repository;
+using DataAccess.Repository.IRepository;
 
 namespace DepartmentManagement
 {
@@ -24,6 +26,8 @@ namespace DepartmentManagement
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 
             services.AddControllersWithViews();
         }

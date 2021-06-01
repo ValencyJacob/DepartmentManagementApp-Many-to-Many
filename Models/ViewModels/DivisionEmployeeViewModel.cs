@@ -5,12 +5,12 @@ namespace Models.ViewModels
 {
     public class DivisionEmployeeViewModel
     {
-        public DivisionEmployee DivisionEmployees { get; set; }
+        public DivisionEmployee DivisionEmployees { get; set; }        
         public Division Division { get; set; }
 
-        public IEnumerable<DivisionEmployee> DivisionEmployeeList { get; set; }
-        public IEnumerable<EmployeePosition> EmployeePositionList { get; set; } // get only 1 obj
+        public IEnumerable<EmployeePosition> EmployeePositionList { get; set; } // That's the right decision?
 
+        public IEnumerable<DivisionEmployee> DivisionEmployeeList { get; set; }
         public IEnumerable<SelectListItem> DivisionEmployeeListDropDown { get; set; }
     }
 }

@@ -7,16 +7,21 @@ using Models.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
+using System;
+using System.IO;
 
 namespace DepartmentManagement.Controllers
 {
     public class EmployeeController : Controller
     {
         private readonly ApplicationDbContext _db;
+        private readonly IWebHostEnvironment _webHost;
 
-        public EmployeeController(ApplicationDbContext db)
+        public EmployeeController(ApplicationDbContext db, IWebHostEnvironment webHost)
         {
             _db = db;
+            _webHost = webHost;
         }
 
         #region Fixed
@@ -53,22 +58,69 @@ namespace DepartmentManagement.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Upsert(Employee model)
+        public async Task<IActionResult> Upsert(Employee item)
         {
-            if (model.Id == 0)
+            if (ModelState.IsValid)
             {
-                // Create
-                await _db.Employees.AddAsync(model);
+                string webRootPath = _webHost.WebRootPath;
+                var files = HttpContext.Request.Form.Files;
+
+                if (files.Count > 0)
+                {
+                    string fileName = Guid.NewGuid().ToString();
+                    var uploads = Path.Combine(webRootPath, @"images\employee");
+                    var extenstion = Path.GetExtension(files[0].FileName);
+
+                    if (item.ImageUrl != null)
+                    {
+                        // Update data with image
+                        var imagePath = Path.Combine(webRootPath, item.ImageUrl.TrimStart('\\'));
+
+                        if (System.IO.File.Exists(imagePath))
+                        {
+                            System.IO.File.Delete(imagePath);
+                        }
+                    }
+
+                    using (var fileStreams = new FileStream(Path.Combine(uploads, fileName + extenstion), FileMode.Create))
+                    {
+                        await files[0].CopyToAsync(fileStreams);
+                    }
+
+                    item.ImageUrl = @"\images\employee\" + fileName + extenstion;
+                }
+                else
+                {
+                    // Update data without update image
+                    if (item.Id != 0)
+                    {
+                        var model = await _db.Employees.FindAsync(item.Id);
+                        item.ImageUrl = model.ImageUrl;
+                    }
+                }
+
+                if (item.Id == 0)
+                {
+                    await _db.Employees.AddAsync(item);
+                }
+                else
+                {
+                    _db.Employees.Update(item);
+                }
+
+                await _db.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
             }
             else
             {
-                // Update
-                _db.Employees.Update(model);
+                if (item.Id != 0)
+                {
+                    item = await _db.Employees.FindAsync(item.Id);
+                }
             }
 
-            await _db.SaveChangesAsync();
-
-            return RedirectToAction("Index");
+            return View(item);
         }
 
         [HttpGet]
@@ -104,6 +156,18 @@ namespace DepartmentManagement.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var model = await _db.Employees.FirstOrDefaultAsync(x => x.Id == id);
+
+            string webRootPath = _webHost.WebRootPath;
+
+            if (model.ImageUrl != null)
+            {
+                var imagePath = Path.Combine(webRootPath, model.ImageUrl.TrimStart('\\'));
+
+                if (System.IO.File.Exists(imagePath))
+                {
+                    System.IO.File.Delete(imagePath);
+                }
+            }
 
             if (model != null)
             {

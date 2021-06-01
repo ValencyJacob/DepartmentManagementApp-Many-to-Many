@@ -28,20 +28,6 @@
                     No Employee
                 </p>
             }
-
-            @if (Model.EmployeePositionList != null)
-            {
-                <div class="card-body">
-                    @foreach (var emp in Model.EmployeePositionList)
-                    {
-                        <p>
-                            <span class="badge badge-warning">
-                                @emp.Position.Name
-                            </span>
-                        </p>
-                    }
-                </div>
-            }
         </div>
     </div>
 

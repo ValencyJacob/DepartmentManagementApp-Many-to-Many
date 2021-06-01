@@ -1,6 +1,5 @@
-﻿using DataAccess;
+﻿using DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Models;
 using System.Threading.Tasks;
 
@@ -8,18 +7,17 @@ namespace DepartmentManagement.Controllers
 {
     public class DepartmentController : Controller
     {
-        private readonly ApplicationDbContext _db;
+        private readonly IDepartmentRepository _repository;
 
-        public DepartmentController(ApplicationDbContext db)
+        public DepartmentController(IDepartmentRepository repository)
         {
-            _db = db;
+            _repository = repository;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var models = await _db.Departments
-                .ToListAsync();
+            var models = await _repository.GetAllAsync();
 
             return View(models);
         }
@@ -29,14 +27,12 @@ namespace DepartmentManagement.Controllers
         {
             var model = new Department();
 
-            // Create
             if (id == null)
             {
                 return View(model);
             }
 
-            // Edit
-            model = await _db.Departments.FirstOrDefaultAsync(x => x.Id == id);
+            model = await _repository.GetAsync(id.Value);
 
             if (model == null)
             {
@@ -52,16 +48,12 @@ namespace DepartmentManagement.Controllers
         {
             if (model.Id == 0)
             {
-                // Create
-                await _db.Departments.AddAsync(model);
+                await _repository.AddAsync(model);
             }
             else
             {
-                // Update
-                _db.Departments.Update(model);
+                await _repository.UpdateAsync(model.Id, model);
             }
-
-            await _db.SaveChangesAsync();
 
             return RedirectToAction("Index");
         }
@@ -69,8 +61,7 @@ namespace DepartmentManagement.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            var model = await _db.Departments.Include(x => x.Divisions)
-                .FirstOrDefaultAsync(x => x.Id == id);
+            var model = await _repository.GetAsync(id);
 
             if (model != null)
             {
@@ -84,12 +75,11 @@ namespace DepartmentManagement.Controllers
 
         public async Task<IActionResult> Delete(int id)
         {
-            var model = await _db.Departments.FirstOrDefaultAsync(x => x.Id == id);
+            var model = await _repository.GetAsync(id);
 
             if (model != null)
             {
-                _db.Departments.Remove(model);
-                await _db.SaveChangesAsync();
+                await _repository.DeleteAsync(model.Id);
             }
 
             return RedirectToAction("Index");
