@@ -15,7 +15,18 @@
                         <p>
                             <span class="badge badge-warning">
                                 <a asp-controller="employee" asp-action="details" asp-route-Id="@emp.Employee.Id">
-                                    @emp.Employee.FullName
+                                    @emp.Employee.FullName /
+
+                                    @foreach (var position in Model.EmployeePositionList)
+                                    {
+                                        @if (emp.Employee_Id == position.Employee_Id)
+                                        {
+                                            <span class="badge badge-warning">
+                                                @position.Position.Name
+                                            </span>
+                                        }
+                                    }
+
                                 </a>
                             </span>
                         </p>
@@ -29,6 +40,7 @@
                 </p>
             }
         </div>
+        
     </div>
 
     <a class="btn btn-primary text-white" asp-action="manageemployees" asp-route-Id="@Model.Division.Id">

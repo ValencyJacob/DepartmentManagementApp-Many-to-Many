@@ -90,6 +90,10 @@ namespace DepartmentManagement.Controllers
                     Division_Id = id
                 },
 
+                // 1
+                EmployeePositionList = await _db.EmployeePositions.Include(x => x.Position).Include(x => x.Employee).ToListAsync(), // ?
+
+
                 Division = await _db.Divisions.FirstOrDefaultAsync(x => x.Id == id)
             };
 
