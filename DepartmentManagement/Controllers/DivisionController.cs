@@ -10,12 +10,12 @@ namespace DepartmentManagement.Controllers
 {
     public class DivisionController : Controller
     {
-        private readonly IDivisionRepository _db;
+        private readonly IDivisionRepository _repository;
         private readonly ApplicationDbContext _context;
 
-        public DivisionController(IDivisionRepository db, ApplicationDbContext context)
+        public DivisionController(IDivisionRepository repository, ApplicationDbContext context)
         {
-            _db = db;
+            _repository = repository;
             _context = context;
         }
 
@@ -30,7 +30,7 @@ namespace DepartmentManagement.Controllers
             */
             #endregion
 
-            var models = await _db.GetAllAsync();
+            var models = await _repository.GetAllAsync();
 
             return View(models);
         }
@@ -80,7 +80,7 @@ namespace DepartmentManagement.Controllers
                 return View(model);
             }
 
-            model = await _db.GetByIdAsync(id.Value);
+            model = await _repository.GetByIdAsync(id.Value);
 
             if (model == null)
             {
@@ -113,11 +113,11 @@ namespace DepartmentManagement.Controllers
 
             if (model.Division.Id == 0)
             {
-                await _db.AddItemAsync(model);
+                await _repository.AddItemAsync(model);
             }
             else
             {
-                await _db.UpdateAsync(model.Division.Id, model);
+                await _repository.UpdateAsync(model.Division.Id, model);
             }
 
             return RedirectToAction("Index");
@@ -159,7 +159,7 @@ namespace DepartmentManagement.Controllers
             */
             #endregion
 
-            var model = await _db.GetAsync(id);
+            var model = await _repository.GetAsync(id);
 
             if (model != null)
             {
@@ -182,11 +182,11 @@ namespace DepartmentManagement.Controllers
             //}
             #endregion
 
-            var model = await _db.GetByIdAsync(id);
+            var model = await _repository.GetByIdAsync(id);
 
             if (model != null)
             {
-                await _db.DeleteAsync(model.Division.Id);
+                await _repository.DeleteAsync(model.Division.Id);
             }
 
             return RedirectToAction("Index");
@@ -225,7 +225,7 @@ namespace DepartmentManagement.Controllers
             */
             #endregion
 
-            var model = await _db.GetAllObj(id);
+            var model = await _repository.GetAllObj(id);
 
             return View(model);
         }
@@ -241,7 +241,7 @@ namespace DepartmentManagement.Controllers
             //}
             #endregion
 
-            await _db.AddAllObj(model);
+            await _repository.AddAllObj(model);
 
             return RedirectToAction(nameof(ManageEmployees), new { @id = model.DivisionEmployees.Division_Id });
         }
@@ -259,7 +259,7 @@ namespace DepartmentManagement.Controllers
             //return RedirectToAction(nameof(ManageEmployees), new { @id = newsId });
             #endregion
 
-            await _db.RemoveAllObj(id, model);
+            await _repository.RemoveAllObj(id, model);
             return RedirectToAction(nameof(ManageEmployees), new { @id = model.Division.Id });          
         }
     }

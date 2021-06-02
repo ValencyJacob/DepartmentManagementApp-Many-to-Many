@@ -1,30 +1,25 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 using Models;
-using Models.ViewModels;
-using DataAccess;
+using DataAccess.Repository.IRepository;
+
 
 namespace DepartmentManagement.Controllers
 {
     public class PositionController : Controller
     {
-        private readonly ApplicationDbContext _db;
+        private readonly IPositionRepository _repository;
 
-        public PositionController(ApplicationDbContext db)
+        public PositionController(IPositionRepository repository)
         {
-            _db = db;
+            _repository = repository;
         }
 
         #region Fixed
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var models = await _db.Positions
-                .ToListAsync();
+            var models = await _repository.GetAllAsync();
 
             return View(models);
         }
@@ -34,14 +29,12 @@ namespace DepartmentManagement.Controllers
         {
             var model = new Position();
 
-            // Create
             if (id == null)
             {
                 return View(model);
             }
 
-            // Edit
-            model = await _db.Positions.FirstOrDefaultAsync(x => x.Id == id);
+            model = await _repository.GetAsync(id.Value);
 
             if (model == null)
             {
@@ -57,16 +50,12 @@ namespace DepartmentManagement.Controllers
         {
             if (model.Id == 0)
             {
-                // Create
-                await _db.Positions.AddAsync(model);
+                await _repository.AddAsync(model);
             }
             else
             {
-                // Update
-                _db.Positions.Update(model);
+                await _repository.UpdateAsync(model.Id, model);
             }
-
-            await _db.SaveChangesAsync();
 
             return RedirectToAction("Index");
         }
@@ -74,8 +63,7 @@ namespace DepartmentManagement.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            var model = await _db.Positions
-                .FirstOrDefaultAsync(x => x.Id == id);
+            var model = await _repository.GetAsync(id);
 
             if (model != null)
             {
@@ -89,15 +77,16 @@ namespace DepartmentManagement.Controllers
 
         public async Task<IActionResult> Delete(int id)
         {
-            var model = await _db.Positions.FirstOrDefaultAsync(x => x.Id == id);
+            var model = await _repository.GetAsync(id);
 
             if (model != null)
             {
-                _db.Positions.Remove(model);
-                await _db.SaveChangesAsync();
+                await _repository.DeleteAsync(model.Id);
+
+                return RedirectToAction("Index");
             }
 
-            return RedirectToAction("Index");
+            return NotFound();
         }
         #endregion
     }
