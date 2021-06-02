@@ -8,9 +8,16 @@ namespace DataAccess.Repository.IRepository
     public interface IDivisionRepository
     {
         public Task<IEnumerable<Division>> GetAllAsync();
-        public Task<Division> GetAsync(int id);
-        public Task<Division> AddAsync(DivisionViewModel model);
-        public Task<Division> UpdateAsync(int id, DivisionViewModel model);
+        public Task<DivisionEmployeeViewModel> GetAsync(int id);
+        public Task<DivisionViewModel> GetByIdAsync(int id);
+        public Task<DivisionViewModel> AddItemAsync(DivisionViewModel model);
+        public Task<DivisionViewModel> UpdateAsync(int id, DivisionViewModel model);
         public Task DeleteAsync(int id);
+
+        // 0_0
+        public Task<DivisionEmployeeViewModel> GetAllObj(int id);
+        public Task AddAllObj(DivisionEmployeeViewModel model);
+        public Task RemoveAllObj(int id, DivisionEmployeeViewModel model);
+
     }
 }

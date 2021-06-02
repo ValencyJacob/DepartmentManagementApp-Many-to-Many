@@ -28,6 +28,7 @@ namespace DepartmentManagement
                     Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            services.AddScoped<IDivisionRepository, DivisionRepository>();
 
             services.AddControllersWithViews();
         }

@@ -1,29 +1,36 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Collections.Generic;
-using Models;
 using Models.ViewModels;
 using DataAccess;
+using DataAccess.Repository.IRepository;
 
 namespace DepartmentManagement.Controllers
 {
     public class DivisionController : Controller
     {
-        private readonly ApplicationDbContext _db;
+        private readonly IDivisionRepository _db;
+        private readonly ApplicationDbContext _context;
 
-        public DivisionController(ApplicationDbContext db)
+        public DivisionController(IDivisionRepository db, ApplicationDbContext context)
         {
             _db = db;
+            _context = context;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var models = await _db.Divisions
-                .ToListAsync();
+            #region Legacy
+            /*
+            var models = await _db.Divisions.ToListAsync();
+
+            return View(models);
+            */
+            #endregion
+
+            var models = await _db.GetAllAsync();
 
             return View(models);
         }
@@ -31,6 +38,8 @@ namespace DepartmentManagement.Controllers
         [HttpGet]
         public async Task<IActionResult> Upsert(int? id)
         {
+            #region Legacy
+            /*
             var model = new DivisionViewModel();
 
             // SelectListUtem for DropDown. Logic locate in App.Models/Models/ViewModels/NewsViewModel
@@ -55,12 +64,38 @@ namespace DepartmentManagement.Controllers
             }
 
             return View(model);
+            */
+            #endregion
+
+            var model = new DivisionViewModel();
+
+            model.DepartmentList = _context.Departments.Select(x => new SelectListItem
+            {
+                Text = x.Name,
+                Value = x.Id.ToString()
+            });
+
+            if (id == null)
+            {
+                return View(model);
+            }
+
+            model = await _db.GetByIdAsync(id.Value);
+
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+            return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Upsert(DivisionViewModel model)
         {
+            #region Legacy
+            /*
             if (model.Division.Id == 0)
             {
                 // Create
@@ -73,6 +108,17 @@ namespace DepartmentManagement.Controllers
             }
 
             await _db.SaveChangesAsync();
+            */
+            #endregion
+
+            if (model.Division.Id == 0)
+            {
+                await _db.AddItemAsync(model);
+            }
+            else
+            {
+                await _db.UpdateAsync(model.Division.Id, model);
+            }
 
             return RedirectToAction("Index");
         }
@@ -80,7 +126,9 @@ namespace DepartmentManagement.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            var model = new DivisionEmployeeViewModel
+            #region Legacy
+            /*
+             var model = new DivisionEmployeeViewModel
             {
                 DivisionEmployeeList = await _db.DivisionEmployeesModel.Include(x => x.Employee)
                 .Include(x => x.Division).Where(x => x.Division_Id == id).ToListAsync(),
@@ -108,24 +156,48 @@ namespace DepartmentManagement.Controllers
             });
 
             return View(model);
-        }
+            */
+            #endregion
 
-        public async Task<IActionResult> Delete(int id)
-        {
-            var model = await _db.Divisions.FirstOrDefaultAsync(x => x.Id == id);
+            var model = await _db.GetAsync(id);
 
             if (model != null)
             {
-                _db.Divisions.Remove(model);
-                await _db.SaveChangesAsync();
+                return View(model);
+            }
+
+            return NotFound();
+        }
+
+        //[HttpDelete("{id:int}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            #region Legacy
+            //var model = await _db.Divisions.FirstOrDefaultAsync(x => x.Id == id);
+
+            //if (model != null)
+            //{
+            //    _db.Divisions.Remove(model);
+            //    await _db.SaveChangesAsync();
+            //}
+            #endregion
+
+            var model = await _db.GetByIdAsync(id);
+
+            if (model != null)
+            {
+                await _db.DeleteAsync(model.Division.Id);
             }
 
             return RedirectToAction("Index");
         }
 
         // Many to Many Relationship methods
+        [HttpGet]
         public async Task<IActionResult> ManageEmployees(int id)
         {
+            #region Legacy
+            /*
             var model = new DivisionEmployeeViewModel
             {
                 DivisionEmployeeList = await _db.DivisionEmployeesModel.Include(x => x.Employee)
@@ -150,16 +222,26 @@ namespace DepartmentManagement.Controllers
                 Value = x.Id.ToString()
             });
             return View(model);
+            */
+            #endregion
+
+            var model = await _db.GetAllObj(id);
+
+            return View(model);
         }
 
         [HttpPost]
         public async Task<IActionResult> ManageEmployees(DivisionEmployeeViewModel model)
         {
-            if (model.DivisionEmployees.Division_Id != 0 && model.DivisionEmployees.Employee_Id != 0)
-            {
-                _db.DivisionEmployeesModel.Add(model.DivisionEmployees);
-                await _db.SaveChangesAsync();
-            }
+            #region Legacy
+            //if (model.DivisionEmployees.Division_Id != 0 && model.DivisionEmployees.Employee_Id != 0)
+            //{
+            //    _db.DivisionEmployeesModel.Add(model.DivisionEmployees);
+            //    await _db.SaveChangesAsync();
+            //}
+            #endregion
+
+            await _db.AddAllObj(model);
 
             return RedirectToAction(nameof(ManageEmployees), new { @id = model.DivisionEmployees.Division_Id });
         }
@@ -167,13 +249,18 @@ namespace DepartmentManagement.Controllers
         [HttpPost]
         public async Task<IActionResult> RemoveEmployees(int id, DivisionEmployeeViewModel model)
         {
-            int newsId = model.Division.Id;
-            var item = await _db.DivisionEmployeesModel.FirstOrDefaultAsync(x => x.Employee_Id == id && x.Division_Id == newsId);
+            #region Legacy
+            //int newsId = model.Division.Id;
+            //var item = await _db.DivisionEmployeesModel.FirstOrDefaultAsync(x => x.Employee_Id == id && x.Division_Id == newsId);
 
-            _db.DivisionEmployeesModel.Remove(item);
-            await _db.SaveChangesAsync();
+            //_db.DivisionEmployeesModel.Remove(item);
+            //await _db.SaveChangesAsync();
 
-            return RedirectToAction(nameof(ManageEmployees), new { @id = newsId });
+            //return RedirectToAction(nameof(ManageEmployees), new { @id = newsId });
+            #endregion
+
+            await _db.RemoveAllObj(id, model);
+            return RedirectToAction(nameof(ManageEmployees), new { @id = model.Division.Id });          
         }
     }
 }
