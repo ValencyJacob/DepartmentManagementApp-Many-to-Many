@@ -52,6 +52,17 @@ namespace DataAccess.Repository
             return await _context.Employees.ToListAsync();
         }
 
+        public async Task<IEnumerable<DivisionEmployee>> GetAllEmpDiv() // ManageEmployees
+        {
+            var models = await _context.DivisionEmployeesModel.Include(x => x.Division)
+                .Include(x => x.Employee).ToListAsync();
+
+            //remove duplicate values from the list
+            var result = models.GroupBy(x => x.Employee_Id).Select(x => x.FirstOrDefault()).ToList();
+
+            return result;
+        }
+
         public async Task<EmployeePositionViewModel> GetAllObj(int id)
         {
             var model = new EmployeePositionViewModel

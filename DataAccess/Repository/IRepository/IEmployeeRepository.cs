@@ -18,5 +18,8 @@ namespace DataAccess.Repository.IRepository
         public Task<EmployeePositionViewModel> GetAllObj(int id);
         public Task AddAllObj(EmployeePositionViewModel model);
         public Task RemoveAllObj(int id, EmployeePositionViewModel model);
+
+        //-_-
+        public Task<IEnumerable<DivisionEmployee>> GetAllEmpDiv();
     }
 }

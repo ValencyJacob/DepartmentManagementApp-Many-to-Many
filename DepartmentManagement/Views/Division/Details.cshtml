@@ -4,7 +4,18 @@
 
     <div class="card">
         <div class="card-header">
-            @Model.Division.Name
+            @foreach (var dep in Model.DepartmentList)
+            {
+                @if (dep.Id == Model.Division.DepartmentId)
+                {
+                    <h5>
+                        @dep.Name
+                    </h5>
+                }
+            }
+            <p>
+                @Model.Division.Name
+            </p>
         </div>
         <div class="card-body">
             @if (Model.DivisionEmployeeList != null)

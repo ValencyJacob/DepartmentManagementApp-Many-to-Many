@@ -99,7 +99,7 @@ namespace DataAccess.Repository
 
         public async Task<DivisionEmployeeViewModel> GetAsync(int id)
         {
-            var model = new DivisionEmployeeViewModel
+            var model = new DivisionEmployeeViewModel // Department name = null
             {
                 DivisionEmployeeList = await _context.DivisionEmployeesModel.Include(x => x.Employee)
                 .Include(x => x.Division).Where(x => x.Division_Id == id).ToListAsync(),
@@ -109,9 +109,9 @@ namespace DataAccess.Repository
                     Division_Id = id
                 },
 
-                // 1
-                EmployeePositionList = await _context.EmployeePositions.Include(x => x.Position).Include(x => x.Employee).ToListAsync(), // ?
+                EmployeePositionList = await _context.EmployeePositions.Include(x => x.Position).Include(x => x.Employee).ToListAsync(),
 
+                DepartmentList = await _context.Departments.ToListAsync(), // 0_0 ?
 
                 Division = await _context.Divisions.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id)
             };

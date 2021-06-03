@@ -23,8 +23,8 @@ namespace DepartmentManagement.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var models = await _repository.GetAllAsync();
-
+            //var models = await _repository.GetAllAsync();
+            var models = await _repository.GetAllEmpDiv();
             return View(models);
         }
 
