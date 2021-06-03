@@ -117,7 +117,7 @@ namespace DepartmentManagement.Controllers
             }
             else
             {
-                await _repository.UpdateAsync(model.Division.Id, model);
+                await _repository.UpdateAsync(model);
             }
 
             return RedirectToAction("Index");

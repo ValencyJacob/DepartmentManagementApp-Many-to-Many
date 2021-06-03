@@ -15,13 +15,17 @@ namespace DepartmentManagement.Controllers
             _repository = repository;
         }
 
-        #region Fixed
         [HttpGet]
         public async Task<IActionResult> Index()
         {
             var models = await _repository.GetAllAsync();
 
-            return View(models);
+            if (models != null)
+            {
+                return View(models);
+            }
+
+            return NotFound();
         }
 
         [HttpGet]
@@ -88,6 +92,5 @@ namespace DepartmentManagement.Controllers
 
             return NotFound();
         }
-        #endregion
     }
 }

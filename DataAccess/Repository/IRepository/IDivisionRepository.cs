@@ -11,7 +11,7 @@ namespace DataAccess.Repository.IRepository
         public Task<DivisionEmployeeViewModel> GetAsync(int id);
         public Task<DivisionViewModel> GetByIdAsync(int id);
         public Task<DivisionViewModel> AddItemAsync(DivisionViewModel model);
-        public Task<DivisionViewModel> UpdateAsync(int id, DivisionViewModel model);
+        public Task<DivisionViewModel> UpdateAsync(DivisionViewModel model);
         public Task DeleteAsync(int id);
 
         // 0_0

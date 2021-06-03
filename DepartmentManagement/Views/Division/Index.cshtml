@@ -22,6 +22,10 @@
                         <div class="card text-black-50">
 
                             <div class="card-header">
+                                @if (item.Department.Name != null)
+                                {
+                                    <h5>@item.Department.Name</h5>
+                                }
                                 <p>@item.Name</p>
                             </div>
 

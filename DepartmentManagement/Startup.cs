@@ -30,6 +30,7 @@ namespace DepartmentManagement
             services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             services.AddScoped<IDivisionRepository, DivisionRepository>();
             services.AddScoped<IPositionRepository, PositionRepository>();
+            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 
             services.AddControllersWithViews();
         }

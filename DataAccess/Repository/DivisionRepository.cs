@@ -35,18 +35,14 @@ namespace DataAccess.Repository
             return model;
         }
 
-        public async Task<DivisionViewModel> UpdateAsync(int id, DivisionViewModel model)
+        public async Task<DivisionViewModel> UpdateAsync(DivisionViewModel model)
         {
-            model = new DivisionViewModel();
-
             // SelectListUtem for DropDown. Logic locate in App.Models/Models/ViewModels/NewsViewModel
             model.DepartmentList = _context.Departments.Select(x => new SelectListItem
             {
                 Text = x.Name,
                 Value = x.Id.ToString()
             });
-
-            model.Division = await _context.Divisions.FirstOrDefaultAsync(x => x.Id == id);
 
             _context.Divisions.Update(model.Division);
 
@@ -68,7 +64,7 @@ namespace DataAccess.Repository
 
         public async Task<IEnumerable<Division>> GetAllAsync()
         {
-            var models = await _context.Divisions.ToListAsync();
+            var models = await _context.Divisions.Include(x => x.Department).ToListAsync();
 
             return models;
         }
@@ -91,7 +87,7 @@ namespace DataAccess.Repository
             }
 
             // Edit
-            model.Division = await _context.Divisions.FirstOrDefaultAsync(x => x.Id == id);
+            model.Division = await _context.Divisions.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
 
             //if (model == null)
             //{
@@ -117,7 +113,7 @@ namespace DataAccess.Repository
                 EmployeePositionList = await _context.EmployeePositions.Include(x => x.Position).Include(x => x.Employee).ToListAsync(), // ?
 
 
-                Division = await _context.Divisions.FirstOrDefaultAsync(x => x.Id == id)
+                Division = await _context.Divisions.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id)
             };
 
             List<int> tempAssignedList = model.DivisionEmployeeList.Select(x => x.Employee_Id).ToList();
