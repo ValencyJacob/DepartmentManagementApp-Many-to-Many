@@ -5,7 +5,15 @@
     <div class="card">
         <img class="card-img-top" src="@Model.Employee.ImageUrl" alt="Card image cap">
         <div class="card-header">
-            @Model.Employee.FullName
+            <h5>
+                @Model.Employee.FirstName @Model.Employee.MiddleName @Model.Employee.LastName
+            </h5>
+            <p>
+                @Model.Employee.Phone
+            </p>
+            <p>
+                @Model.Employee.Email
+            </p>
         </div>
         @if (Model.EmployeePositionList != null)
         {

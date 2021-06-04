@@ -11,7 +11,7 @@ namespace Models.ViewModels
 
         public IEnumerable<EmployeePosition> EmployeePositionList { get; set; }
 
-        //0_0 ?
+        //0_0
         public IEnumerable<Department> DepartmentList { get; set; }
         //
 

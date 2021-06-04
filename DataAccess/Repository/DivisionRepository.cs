@@ -3,10 +3,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Models;
 using Models.ViewModels;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DataAccess.Repository
@@ -111,7 +109,7 @@ namespace DataAccess.Repository
 
                 EmployeePositionList = await _context.EmployeePositions.Include(x => x.Position).Include(x => x.Employee).ToListAsync(),
 
-                DepartmentList = await _context.Departments.ToListAsync(), // 0_0 ?
+                DepartmentList = await _context.Departments.ToListAsync(), // 0_0
 
                 Division = await _context.Divisions.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id)
             };
@@ -122,7 +120,7 @@ namespace DataAccess.Repository
 
             model.DivisionEmployeeListDropDown = tempList.Select(x => new SelectListItem
             {
-                Text = x.FullName,
+                Text = x.FirstName,
                 Value = x.Id.ToString()
             });
 
@@ -153,7 +151,7 @@ namespace DataAccess.Repository
 
             model.DivisionEmployeeListDropDown = tempEmployeesList.Select(x => new SelectListItem
             {
-                Text = x.FullName,
+                Text = $"{x.FirstName + " " + x.LastName}",
                 Value = x.Id.ToString()
             });
 
