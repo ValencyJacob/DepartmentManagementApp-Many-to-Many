@@ -5,24 +5,33 @@
 }
 
 <div class="row pb-5">
-    @foreach (var item in Model)
+    @if (Model != null)
     {
-        <div class="col-lg-4 col-md-9">
-            <a asp-controller="Department" asp-action="Details" class="btn btn-outline-dark p-2 m-2" style="text-decoration:none;
+        @foreach (var item in Model)
+        {
+            <div class="col-lg-4 col-md-9">
+                <a asp-controller="Department" asp-action="Details" class="btn btn-outline-dark p-2 m-2" style="text-decoration:none;
                     box-shadow: 1px 1px 8px 0px rgba(0,0,0,0.71);" asp-route-id="@item.Id">
-                <div class="card text-black-50">
-                    <div class="card-header">
-                        <p>@item.Name</p>
-                    </div>
+                    <div class="card text-black-50">
+                        <div class="card-header">
+                            <p>@item.Name</p>
+                        </div>
 
-                    @*<img class="card-img-top" src="@item.ImageUrl" alt="Card image cap">*@
+                        @*<img class="card-img-top" src="@item.ImageUrl" alt="Card image cap">*@
 
-                    <div class="card-body">
-                        Description or address
+                        <div class="card-body">
+                            Description or address
+                        </div>
                     </div>
-                </div>
-            </a>
-        </div>
+                </a>
+            </div>
+        }
+    }
+    else
+    {
+        <p>
+            No data
+        </p>
     }
 </div>
 

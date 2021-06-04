@@ -21,6 +21,13 @@ namespace DepartmentManagement.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> AllEmployees()
+        {
+            var models = await _repository.GetAllAsync(); //Only employees
+            return View(models);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             //var models = await _repository.GetAllAsync(); //Only employees
@@ -180,7 +187,7 @@ namespace DepartmentManagement.Controllers
                 await _repository.UpdateAsync(item);
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(AllEmployees));
         }
 
         [HttpGet]
@@ -262,7 +269,7 @@ namespace DepartmentManagement.Controllers
 
             await _repository.DeleteAsync(model.Id);
 
-            return RedirectToAction("Index");
+            return RedirectToAction("AllEmployees");
         }
 
         // Many to Many Relationship methods
