@@ -7,4 +7,4 @@ Department and Division (One-To-Many).
 4)Add to model Department phone + city + address props. Done
 5)Add data validation to models. Done
 
-6)Add Identity
+6)Add Identity. Done
