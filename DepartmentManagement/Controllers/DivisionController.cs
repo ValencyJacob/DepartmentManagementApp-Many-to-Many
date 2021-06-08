@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 using Models.ViewModels;
 using DataAccess;
 using DataAccess.Repository.IRepository;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DepartmentManagement.Controllers
 {
+    [Authorize(Roles = Common.Common.AdminRole)]
     public class DivisionController : Controller
     {
         private readonly IDivisionRepository _repository;
@@ -19,6 +21,7 @@ namespace DepartmentManagement.Controllers
             _context = context;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -123,6 +126,7 @@ namespace DepartmentManagement.Controllers
             return RedirectToAction("Index");
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {

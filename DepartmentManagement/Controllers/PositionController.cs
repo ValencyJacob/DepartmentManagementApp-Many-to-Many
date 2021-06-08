@@ -2,10 +2,11 @@
 using System.Threading.Tasks;
 using Models;
 using DataAccess.Repository.IRepository;
-
+using Microsoft.AspNetCore.Authorization;
 
 namespace DepartmentManagement.Controllers
 {
+    [Authorize(Roles = Common.Common.AdminRole)]
     public class PositionController : Controller
     {
         private readonly IPositionRepository _repository;

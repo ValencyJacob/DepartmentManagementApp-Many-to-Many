@@ -9,8 +9,11 @@
         </div>
 
         <div class="col-3 text-right btn-block">
-            <a asp-action="Upsert" class="btn btn-info form-control"> Add </a>
-            <a asp-action="AllEmployees" class="btn btn-success form-control"> All employees list </a>           
+            @if (User.IsInRole(Common.AdminRole))
+            {
+                <a asp-action="Upsert" class="btn btn-info form-control"> Add </a>
+            }
+            <a asp-action="AllEmployees" class="btn btn-success form-control"> All employees list </a>
         </div>
     </div>
     <div>
@@ -38,15 +41,21 @@
                             </div>
 
                             <div class="card-footer">
-                                <a class="btn btn-primary text-white" asp-action="Upsert" asp-route-Id="@item.Employee.Id">
-                                    Edit
-                                </a>
+
+                                @if (User.IsInRole(Common.AdminRole))
+                                {
+                                    <a class="btn btn-primary text-white" asp-action="Upsert" asp-route-Id="@item.Employee.Id">
+                                        Edit
+                                    </a>
+                                    <a class="btn btn-danger text-white" asp-action="Delete" asp-route-Id="@item.Employee.Id">
+                                        Delete
+                                    </a>
+                                }
+
                                 <a class="btn btn-primary text-white" asp-action="Details" asp-route-Id="@item.Employee.Id">
                                     Details
                                 </a>
-                                <a class="btn btn-danger text-white" asp-action="Delete" asp-route-Id="@item.Employee.Id">
-                                    Delete
-                                </a>
+
                             </div>
 
                         </div>

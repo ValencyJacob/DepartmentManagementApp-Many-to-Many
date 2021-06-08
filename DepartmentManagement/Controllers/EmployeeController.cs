@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Hosting;
 using System;
 using System.IO;
 using DataAccess.Repository.IRepository;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DepartmentManagement.Controllers
 {
+    [Authorize(Roles = Common.Common.AdminRole)]
     public class EmployeeController : Controller
     {
         private readonly IEmployeeRepository _repository;
@@ -20,6 +22,7 @@ namespace DepartmentManagement.Controllers
             _webHost = webHost;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> AllEmployees()
         {
@@ -27,6 +30,7 @@ namespace DepartmentManagement.Controllers
             return View(models);
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -190,6 +194,7 @@ namespace DepartmentManagement.Controllers
             return RedirectToAction(nameof(AllEmployees));
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {

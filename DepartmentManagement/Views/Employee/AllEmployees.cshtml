@@ -5,10 +5,12 @@
         <div class="col-9">
             <h2 class="text-info">All Employees List</h2>
         </div>
-
-        <div class="col-3 text-right">
-            <a asp-action="Upsert" class="btn btn-info form-control"> Add </a>
-        </div>
+        @if (User.IsInRole(Common.AdminRole))
+        {
+            <div class="col-3 text-right">
+                <a asp-action="Upsert" class="btn btn-info form-control"> Add </a>
+            </div>
+        }
     </div>
     <div>
         @if (Model.Count() > 0)
