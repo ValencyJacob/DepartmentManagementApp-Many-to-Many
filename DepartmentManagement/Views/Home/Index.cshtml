@@ -5,6 +5,9 @@
     ViewData["Title"] = "Home Page";
 }
 
+
+<br />
+<br />
 <div class="row pb-5">
     @if (Model != null)
     {
@@ -21,7 +24,12 @@
                         @*<img class="card-img-top" src="@item.ImageUrl" alt="Card image cap">*@
 
                         <div class="card-body">
-                            Description or address
+                            <h5>
+                                @item.City
+                            </h5>
+                            <p>
+                                @item.Address
+                            </p>
                         </div>
                     </div>
                 </a>

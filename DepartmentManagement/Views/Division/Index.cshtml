@@ -26,15 +26,22 @@
                             <div class="card-header">
                                 @if (item.Department != null)
                                 {
-                                    <h5>@item.Department.Name</h5>
+                                    <h5>Department: 
+                                        <span>
+                                            @item.Department.Name
+                                        </span>
+                                    </h5>
                                 }
                                 <p>@item.Name</p>
                             </div>
 
-                            @*<img class="card-img-top" src="@item.ImageUrl" alt="Card image cap">*@
-
                             <div class="card-body">
-                                Description or address
+                                <h5>
+                                    CabinetNumber:
+                                    <span>
+                                        @item.CabinetNumber
+                                    </span>
+                                </h5>
                             </div>
 
                             <div class="card-footer">

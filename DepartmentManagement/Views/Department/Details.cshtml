@@ -1,5 +1,7 @@
 ﻿@model Department
 
+<br />
+<br />
 <div class="container">
 
     <div class="card">
@@ -9,16 +11,28 @@
         <div class="card-body">
             <div>
                 <h5>
-                    @Model.City
+                    City: 
+                    <span>
+                        @Model.City
+                    </span>
                 </h5>
                 <h5>
-                    @Model.Address
+                    Address: 
+                    <span>
+                        @Model.Address
+                    </span>
                 </h5>
                 <h5>
-                    @Model.MainPhone
+                    Reception phone: 
+                    <span>
+                        @Model.MainPhone
+                    </span>
                 </h5>
                 <h5>
-                    @Model.BIN
+                    BIN: 
+                    <span>
+                        @Model.BIN
+                    </span>
                 </h5>
             </div>
             @if (Model.Divisions != null)

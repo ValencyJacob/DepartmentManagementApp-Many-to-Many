@@ -1,5 +1,8 @@
 ﻿@model DivisionEmployeeViewModel
 
+
+<br />
+<br />
 <div class="container">
 
     <div class="card">
@@ -9,26 +12,34 @@
                 @if (dep.Id == Model.Division.DepartmentId)
                 {
                     <h5>
-                        @dep.Name
+                        Department:
+                        <span>
+                            @dep.Name
+                        </span>
                     </h5>
                 }
             }
             <p>
                 @Model.Division.Name
             </p>
-            <p>
-                @Model.Division.CabinetNumber
-            </p>
+            <h5>
+                Cabinet:
+                <span>
+                    @Model.Division.CabinetNumber
+                </span>
+            </h5>
         </div>
         <div class="card-body">
             @if (Model.DivisionEmployeeList != null)
             {
                 <div class="card-body">
+                    <h5>Employees:</h5>
                     @foreach (var emp in Model.DivisionEmployeeList)
                     {
                         <p>
                             <span class="badge badge-warning">
                                 <a asp-controller="employee" asp-action="details" asp-route-Id="@emp.Employee.Id">
+                                    <img src="@emp.Employee.ImageUrl" style="width:50px;height:50px;"/>
                                     @emp.Employee.FirstName / @emp.Employee.LastName
 
                                     @foreach (var position in Model.EmployeePositionList)
