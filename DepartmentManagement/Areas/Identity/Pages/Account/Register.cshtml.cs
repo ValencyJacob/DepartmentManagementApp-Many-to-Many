@@ -23,17 +23,20 @@ namespace DepartmentManagement.Areas.Identity.Pages.Account
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _roleManager = roleManager;
         }
 
         [BindProperty]
@@ -64,6 +67,12 @@ namespace DepartmentManagement.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
+            if(!await _roleManager.RoleExistsAsync(Common.Common.AdminRole))
+            {
+                await _roleManager.CreateAsync(new IdentityRole(Common.Common.AdminRole));
+                await _roleManager.CreateAsync(new IdentityRole(Common.Common.UserRole));
+            }
+
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
@@ -76,8 +85,18 @@ namespace DepartmentManagement.Areas.Identity.Pages.Account
             {
                 var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };
                 var result = await _userManager.CreateAsync(user, Input.Password);
+
                 if (result.Succeeded)
                 {
+                    if (User.IsInRole(Common.Common.AdminRole))
+                    {
+                        await _userManager.AddToRoleAsync(user, Common.Common.AdminRole);
+                    }
+                    else
+                    {
+                        await _userManager.AddToRoleAsync(user, Common.Common.UserRole);
+                    }
+
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
