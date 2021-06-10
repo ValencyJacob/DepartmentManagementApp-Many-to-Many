@@ -46,7 +46,8 @@
                                     <a class="btn btn-primary text-white" asp-action="Upsert" asp-route-Id="@item.Id">
                                         Edit
                                     </a>
-                                    <a class="btn btn-danger text-white" asp-action="Delete" asp-route-Id="@item.Id">
+                                    <a class="btn btn-danger text-white" asp-action="Delete" asp-route-Id="@item.Id"
+                                       onclick="return confirm('Подтвердите удаление:')">
                                         Delete
                                     </a>
                                 }

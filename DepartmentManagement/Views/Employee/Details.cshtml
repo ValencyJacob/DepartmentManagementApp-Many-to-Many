@@ -3,66 +3,152 @@
 
 <br />
 <br />
-<div class="container">
+@*<div class="container">
 
-    <div class="card">
-
+    <div class="card mb-3">
         @if (Model.Employee.ImageUrl != null)
         {
-            <img class="card-img-top" style="width:300px;height:300px;" src="@Model.Employee.ImageUrl" alt="Card image cap">
+            <img class="card-img-top" src="@Model.Employee.ImageUrl" alt="Card image cap">
         }
         else
         {
-            <img class="card-img-top" style="width:300px;height:300px;" src="~/images/employee/emp.jpg" alt="Card image cap">
+            <img class="card-img-top" src="~/images/employee/emp.jpg" alt="Card image cap">
         }
+        <div class="card-body">
+            <p class="card-title">
+                ФИО:
+                <strong>
+                    @Model.Employee.FirstName @Model.Employee.MiddleName @Model.Employee.LastName
+                </strong>
+            </p>
+            <p>
+                ИИН:
+                <strong>
+                    @Model.Employee.IIN
+                </strong>
+            </p>
+            <p>
+                Номер телефона:
+                <strong>
+                    @Model.Employee.Phone
+                </strong>
+            </p>
+            <p>
+                Сотовый номер:
+                <strong>
+                    @Model.Employee.MobilePhone
+                </strong>
+            </p>
+            <p>
+                Эл.почта:
+                <strong>
+                    @Model.Employee.Email
+                </strong>
+            </p>
 
-        <div class="card-header">
-            <h5>
-                @Model.Employee.FirstName @Model.Employee.MiddleName @Model.Employee.LastName
-            </h5>
-            <p>
-                @Model.Employee.IIN
-            </p>
-            <p>
-                @Model.Employee.Phone
-            </p>
-            <p>
-                @Model.Employee.MobilePhone
-            </p>
-            <p>
-                @Model.Employee.Email
-            </p>
-        </div>
-        @if (Model.EmployeePositionList != null)
-        {
-            <div class="card-body">
-                @foreach (var emp in Model.EmployeePositionList)
+            <p class="card-text">
+                @if (Model.EmployeePositionList != null)
                 {
-                    <p>
+                    @foreach (var emp in Model.EmployeePositionList)
+                    {
                         <span class="badge badge-warning">
                             @emp.Position.Name
                         </span>
-                    </p>
+                    }
                 }
-            </div>
-        }
-        else
-        {
-            <p>
-                No Position
+                else
+                {
+                    <span>
+                        No Position
+                    </span>
+                }
             </p>
-        }
+        </div>
     </div>
 
-    @if (User.IsInRole(Common.AdminRole))
-    {
-        <a class="btn btn-primary text-white" asp-action="managepositions" asp-route-Id="@Model.Employee.Id">
-            Position
+    <div class="mt-3">
+        @if (User.IsInRole(Common.AdminRole))
+        {
+            <a class="btn btn-primary text-white" asp-action="managepositions" asp-route-Id="@Model.Employee.Id">
+                Position
+            </a>
+        }
+
+        <a asp-action="AllEmployees" class="btn btn-primary">
+            Back
         </a>
-    }
+    </div>
 
-    <a asp-action="AllEmployees" class="btn btn-primary">
-        Back
-    </a>
+</div>*@  
 
-</div>  
+<div class="row justify-content-center" style="min-height:100vh;">
+    <div class="col-sm-8">
+        <div class="card boxShadows">
+
+            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                @if (Model.Employee.ImageUrl != null)
+                {
+                    <img class="card-img-top" src="@Model.Employee.ImageUrl" alt="Card image cap">
+                }
+                else
+                {
+                    <img class="card-img-top" src="~/images/employee/emp.jpg" alt="Card image cap">
+                }
+            </div>
+
+            <div class="card-header text-center">
+                <h3>
+                    @Model.Employee.FirstName @Model.Employee.MiddleName @Model.Employee.LastName
+                </h3>
+            </div>
+
+            <div class="card-body text-center">
+                <h4>
+                    ИИН: @Model.Employee.IIN
+                </h4>
+                <hr />
+                <h4>
+                    Эл.почта: @Model.Employee.Email
+                </h4>
+                <hr />
+                <h4>
+                    Телефон: @Model.Employee.Phone
+                </h4>
+                <hr />
+                <h4>
+                    Сотовый: @Model.Employee.MobilePhone
+                </h4>
+                <hr />
+
+                <div class="card-text text-center">
+                    <h4>Должность:</h4>
+                    <p>
+                        @if (Model.EmployeePositionList != null)
+                        {
+                            @foreach (var emp in Model.EmployeePositionList)
+                            {
+                                <span class="badge badge-warning">
+                                    @emp.Position.Name
+                                </span>
+                            }
+                        }
+                        else
+                        {
+                            <span>
+                                No Position
+                            </span>
+                        }
+                    </p>
+                </div>
+            </div>
+            <div class="m-3 text-center">
+                @if (User.IsInRole(Common.AdminRole))
+                {
+                    <a class="btn btn-primary text-white" asp-action="managepositions" asp-route-Id="@Model.Employee.Id">
+                        Position
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+</div>

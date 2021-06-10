@@ -46,7 +46,7 @@
                 {
 
                     <div class="row pb-2">
-                        <div class="col-8 text-right" style="font-size:23px;">@item.Employee.FirstName @item.Employee.LastName</div>
+                        <div class="col-8 text-right" style="font-size:23px;">@item.Employee.FirstName @item.Employee.MiddleName @item.Employee.LastName</div>
                         <div class="col-4">
                             <button asp-action="RemoveEmployees" type="submit" class="btn btn-danger form-control" asp-route-id="@item.Employee_Id">Remove</button>
                         </div>

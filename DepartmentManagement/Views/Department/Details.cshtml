@@ -5,56 +5,58 @@
 <div class="container">
 
     <div class="card">
-        <div class="card-header">
-            @Model.Name
+        <div class="card-header text-center">
+            <h5>
+                @Model.Name
+            </h5>
         </div>
         <div class="card-body">
             <div>
-                <h5>
-                    City:
-                    <span>
-                        @Model.City
-                    </span>
-                </h5>
-                <h5>
-                    Address:
-                    <span>
-                        @Model.Address
-                    </span>
-                </h5>
-                <h5>
-                    Email:
-                    <span>
-                        @Model.EmailAddress
-                    </span>
-                </h5>
-                <h5>
-                    Reception phone:
-                    <span>
-                        @Model.MainPhone
-                    </span>
-                </h5>
-                <h5>
-                    BIN:
-                    <span>
-                        @Model.BIN
-                    </span>
-                </h5>
+                <div class="card-body float-left">
+                    <p>
+                        Город:
+                        <strong>
+                            @Model.City
+                        </strong>
+                    </p>
+                    <p>
+                        Адрес:
+                        <strong>
+                            @Model.Address
+                        </strong>
+                    </p>
+                    <p>
+                        Эл.почта:
+                        <strong>
+                            @Model.EmailAddress
+                        </strong>
+                    </p>
+                    <p>
+                        Телефон приемной:
+                        <strong>
+                            @Model.MainPhone
+                        </strong>
+                    </p>
+                    <p>
+                        БИН:
+                        <strong>
+                            @Model.BIN
+                        </strong>
+                    </p>
+                </div>
             </div>
             @if (Model.Divisions != null)
             {
-                <div class="card-body">
+                <div class="card-body float-right">
                     <h5>
-                        Divisions:
+                        Отделы:
                     </h5>
                     @foreach (var emp in Model.Divisions)
                     {
                         <p>
-                            <span class="badge badge-warning">
-                                <a asp-controller="division" asp-action="details" asp-route-Id="@emp.Id">
-                                    @emp.Name
-                                </a>
-                            </span>
+                            <a asp-controller="division" asp-action="details" asp-route-Id="@emp.Id">
+                                @emp.Name
+                            </a>
                         </p>
                     }
                 </div>
@@ -68,18 +70,20 @@
         </div>
     </div>
 
-    <a asp-action="Index" class="btn btn-primary">
-        Back
-    </a>
+    <div class="mt-3">
+        @*<a asp-controller="home" asp-action="Index" class="btn btn-primary">
+            Назад
+        </a>*@
 
-    @if (User.IsInRole(Common.AdminRole))
-    {
-        <a class="btn btn-primary text-white" asp-action="Upsert" asp-route-Id="@Model.Id">
-            Edit
-        </a>
-        <a class="btn btn-danger text-white" asp-action="Delete" asp-route-Id="@Model.Id">
-            Delete
-        </a>
-    }
+        @if (User.IsInRole(Common.AdminRole))
+        {
+            <a class="btn btn-primary text-white" asp-action="Upsert" asp-route-Id="@Model.Id">
+                Редактировать
+            </a>
+            <a class="btn btn-danger text-white" asp-action="Delete" asp-route-Id="@Model.Id" onclick="return confirm('Подтвердите удаление:')">
+                Удалить
+            </a>
+        }
+    </div>
 
 </div>  

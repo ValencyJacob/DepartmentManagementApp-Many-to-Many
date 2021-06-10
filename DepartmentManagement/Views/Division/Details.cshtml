@@ -11,8 +11,8 @@
             {
                 @if (dep.Id == Model.Division.DepartmentId)
                 {
-                    <h5>
-                        Department:
+                    <h5 class="text-center">
+                        Департамент:
                         <span>
                             @dep.Name
                         </span>
@@ -22,28 +22,42 @@
             <p>
                 @Model.Division.Name
             </p>
-            <h5>
-                Cabinet:
-                <span>
+
+            <p>
+                Кабинет:
+                <strong>
                     @Model.Division.CabinetNumber
-                </span>
-                Phone: 
-                <span>
+                </strong>
+            </p>
+            <p>
+                Телефон:
+                <strong>
                     @Model.Division.PhoneNumber
-                </span>
-            </h5>
+                </strong>
+            </p>
+
         </div>
         <div class="card-body">
             @if (Model.DivisionEmployeeList != null)
             {
-                <div class="card-body">
-                    <h5>Employees:</h5>
+                <div>
+                    <h5>
+                        Сотрудники
+                    </h5>
                     @foreach (var emp in Model.DivisionEmployeeList)
                     {
                         <p>
                             <span class="badge border">
                                 <a asp-controller="employee" asp-action="details" asp-route-Id="@emp.Employee.Id">
-                                    <img src="@emp.Employee.ImageUrl" style="width:50px;height:50px;" />
+
+                                    @if (@emp.Employee.ImageUrl != null)
+                                    {
+                                        <img src="@emp.Employee.ImageUrl" style="width:50px;height:50px;" />
+                                    }
+                                    else
+                                    {
+                                        <img src="~/images/employee/emp.jpg" style="width:50px;height:50px;" />
+                                    }
 
                                     @emp.Employee.FirstName @emp.Employee.MiddleName @emp.Employee.LastName
 
@@ -56,8 +70,6 @@
                                             </span>
                                         }
                                     }
-                                    IIN: @emp.Employee.IIN
-                                    Mobile phone: @emp.Employee.MobilePhone
                                 </a>
                             </span>
                         </p>
@@ -74,15 +86,17 @@
 
     </div>
 
-    @if (User.IsInRole(Common.AdminRole))
-    {
-        <a class="btn btn-primary text-white" asp-action="manageemployees" asp-route-Id="@Model.Division.Id">
-            Employees
+    <div class="mt-3">
+        @if (User.IsInRole(Common.AdminRole))
+        {
+            <a class="btn btn-primary text-white" asp-action="manageemployees" asp-route-Id="@Model.Division.Id">
+                Employees
+            </a>
+        }
+
+        <a asp-action="Index" class="btn btn-primary">
+            Back
         </a>
-    }
-    
-    <a asp-action="Index" class="btn btn-primary">
-        Back
-    </a>
+    </div>
 
 </div>  
