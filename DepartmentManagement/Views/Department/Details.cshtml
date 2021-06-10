@@ -11,25 +11,31 @@
         <div class="card-body">
             <div>
                 <h5>
-                    City: 
+                    City:
                     <span>
                         @Model.City
                     </span>
                 </h5>
                 <h5>
-                    Address: 
+                    Address:
                     <span>
                         @Model.Address
                     </span>
                 </h5>
                 <h5>
-                    Reception phone: 
+                    Email:
+                    <span>
+                        @Model.EmailAddress
+                    </span>
+                </h5>
+                <h5>
+                    Reception phone:
                     <span>
                         @Model.MainPhone
                     </span>
                 </h5>
                 <h5>
-                    BIN: 
+                    BIN:
                     <span>
                         @Model.BIN
                     </span>
@@ -38,6 +44,9 @@
             @if (Model.Divisions != null)
             {
                 <div class="card-body">
+                    <h5>
+                        Divisions:
+                    </h5>
                     @foreach (var emp in Model.Divisions)
                     {
                         <p>
@@ -62,5 +71,15 @@
     <a asp-action="Index" class="btn btn-primary">
         Back
     </a>
+
+    @if (User.IsInRole(Common.AdminRole))
+    {
+        <a class="btn btn-primary text-white" asp-action="Upsert" asp-route-Id="@Model.Id">
+            Edit
+        </a>
+        <a class="btn btn-danger text-white" asp-action="Delete" asp-route-Id="@Model.Id">
+            Delete
+        </a>
+    }
 
 </div>  

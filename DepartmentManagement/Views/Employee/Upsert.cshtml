@@ -65,11 +65,31 @@
 
                 <div class="form-group row">
                     <div class="col-4">
+                        <label asp-for="IIN"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="IIN" class="form-control" />
+                        <span asp-validation-for="IIN" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-4">
                         <label asp-for="Phone"></label>
                     </div>
                     <div class="col-8">
                         <input asp-for="Phone" class="form-control" />
                         <span asp-validation-for="Phone" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="MobilePhone"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="MobilePhone" class="form-control" />
+                        <span asp-validation-for="MobilePhone" class="text-danger"></span>
                     </div>
                 </div>
 

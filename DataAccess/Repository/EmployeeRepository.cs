@@ -47,6 +47,11 @@ namespace DataAccess.Repository
             }
         }
 
+        public IQueryable<Employee> GetAll()
+        {
+            return _context.Employees;
+        }
+
         public async Task<IEnumerable<Employee>> GetAllAsync()
         {
             return await _context.Employees.ToListAsync();

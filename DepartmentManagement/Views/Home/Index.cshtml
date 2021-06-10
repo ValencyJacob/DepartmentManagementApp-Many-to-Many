@@ -8,22 +8,22 @@
 
 <br />
 <br />
-<div class="row pb-5">
+<div @*class="row pb-5"*@>
     @if (Model != null)
     {
         @foreach (var item in Model)
         {
-            <div class="col-lg-4 col-md-9">
+            <!--<div class="col-lg-4 col-md-9">
                 <a asp-controller="Department" asp-action="Details" class="btn btn-outline-dark p-2 m-2" style="text-decoration:none;
                     box-shadow: 1px 1px 8px 0px rgba(0,0,0,0.71);" asp-route-id="@item.Id">
                     <div class="card text-black-50">
                         <div class="card-header">
                             <p>@item.Name</p>
-                        </div>
+                        </div>-->
 
-                        @*<img class="card-img-top" src="@item.ImageUrl" alt="Card image cap">*@
+            @*<img class="card-img-top" src="@item.ImageUrl" alt="Card image cap">*@
 
-                        <div class="card-body">
+            <!--<div class="card-body">
                             <h5>
                                 @item.City
                             </h5>
@@ -33,7 +33,27 @@
                         </div>
                     </div>
                 </a>
-            </div>
+            </div>-->
+            <a asp-controller="Department" asp-action="Details" class="btn btn-outline-dark p-2 m-2" style="text-decoration:none;
+                    box-shadow: 1px 1px 8px 0px rgba(0,0,0,0.71);" asp-route-id="@item.Id">
+                <div class="card text-black-50">
+                    <h5 class="card-header">Department</h5>
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            @item.Name
+                        </h5>
+                        <p class="card-text">
+                            City: @item.City
+                        </p>
+                        <p class="card-text">
+                            Address: @item.Address
+                        </p>
+                        <p class="card-text">
+                            Email: @item.EmailAddress
+                        </p>
+                    </div>
+                </div>
+            </a>
         }
     }
     else

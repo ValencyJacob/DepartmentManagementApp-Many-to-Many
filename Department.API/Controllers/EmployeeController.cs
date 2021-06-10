@@ -7,9 +7,6 @@ using System;
 using System.IO;
 using DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Authorization;
-using ReflectionIT.Mvc.Paging;
-using System.Linq;
-using Microsoft.AspNetCore.Routing;
 
 namespace DepartmentManagement.Controllers
 {
@@ -27,19 +24,20 @@ namespace DepartmentManagement.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> Index(string filter, int page = 1)
+        public async Task<IActionResult> AllEmployees()
         {
             var models = await _repository.GetAllAsync(); //Only employees
 
-            if (!string.IsNullOrWhiteSpace(filter))
-            {
-                models = models.Where(d => d.FirstName.Contains(filter));
-            }
+            return View(models);
+        }
 
-            var model = PagingList.Create(models, 10, page);
-            model.RouteValue = new RouteValueDictionary { { "filter", filter } };
-
-            return View(model);
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            //var models = await _repository.GetAllAsync(); //Only employees
+            var models = await _repository.GetAllEmpDiv(); //Employees + divisons
+            return View(models);
         }
 
         [HttpGet]
@@ -194,7 +192,7 @@ namespace DepartmentManagement.Controllers
                 await _repository.UpdateAsync(item);
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(AllEmployees));
         }
 
         [AllowAnonymous]

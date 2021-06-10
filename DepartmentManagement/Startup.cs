@@ -9,6 +9,7 @@ using DataAccess.Repository;
 using DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Identity;
 using DepartmentManagement.Common;
+using ReflectionIT.Mvc.Paging;
 
 namespace DepartmentManagement
 {
@@ -39,6 +40,14 @@ namespace DepartmentManagement
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 
             services.AddScoped<SeedData>();
+
+            services.AddMvc();
+
+            services.AddPaging(options => {
+                options.ViewName = "Bootstrap4";
+                options.HtmlIndicatorDown = " <span>&darr;</span>";
+                options.HtmlIndicatorUp = " <span>&uarr;</span>";
+            });
 
             services.AddControllersWithViews();
         }

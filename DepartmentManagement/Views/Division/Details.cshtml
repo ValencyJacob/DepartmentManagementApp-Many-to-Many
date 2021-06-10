@@ -27,6 +27,10 @@
                 <span>
                     @Model.Division.CabinetNumber
                 </span>
+                Phone: 
+                <span>
+                    @Model.Division.PhoneNumber
+                </span>
             </h5>
         </div>
         <div class="card-body">
@@ -37,10 +41,11 @@
                     @foreach (var emp in Model.DivisionEmployeeList)
                     {
                         <p>
-                            <span class="badge badge-warning">
+                            <span class="badge border">
                                 <a asp-controller="employee" asp-action="details" asp-route-Id="@emp.Employee.Id">
-                                    <img src="@emp.Employee.ImageUrl" style="width:50px;height:50px;"/>
-                                    @emp.Employee.FirstName / @emp.Employee.LastName
+                                    <img src="@emp.Employee.ImageUrl" style="width:50px;height:50px;" />
+
+                                    @emp.Employee.FirstName @emp.Employee.MiddleName @emp.Employee.LastName
 
                                     @foreach (var position in Model.EmployeePositionList)
                                     {
@@ -51,7 +56,8 @@
                                             </span>
                                         }
                                     }
-
+                                    IIN: @emp.Employee.IIN
+                                    Mobile phone: @emp.Employee.MobilePhone
                                 </a>
                             </span>
                         </p>
@@ -65,12 +71,16 @@
                 </p>
             }
         </div>
-        
+
     </div>
 
-    <a class="btn btn-primary text-white" asp-action="manageemployees" asp-route-Id="@Model.Division.Id">
-        Employees
-    </a>
+    @if (User.IsInRole(Common.AdminRole))
+    {
+        <a class="btn btn-primary text-white" asp-action="manageemployees" asp-route-Id="@Model.Division.Id">
+            Employees
+        </a>
+    }
+    
     <a asp-action="Index" class="btn btn-primary">
         Back
     </a>

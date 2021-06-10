@@ -1,6 +1,7 @@
 ﻿using Models;
 using Models.ViewModels;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DataAccess.Repository.IRepository
@@ -8,6 +9,7 @@ namespace DataAccess.Repository.IRepository
     public interface IEmployeeRepository
     {
         public Task<IEnumerable<Employee>> GetAllAsync();
+        public IQueryable<Employee> GetAll();
         public Task<EmployeePositionViewModel> GetAsync(int id);
         public Task<Employee> GetByIdAsync(int id);
         public Task<Employee> AddItemAsync(Employee model);

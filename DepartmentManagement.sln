@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DepartmentManagement", "DepartmentManagement\DepartmentManagement.csproj", "{D9CDEB9A-A70B-4576-BB8E-DD8D3915D6EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DepartmentManagement", "DepartmentManagement\DepartmentManagement.csproj", "{D9CDEB9A-A70B-4576-BB8E-DD8D3915D6EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csproj", "{99D7EE17-95B5-45D2-9256-8A28D3987FDE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "Models\Models.csproj", "{99D7EE17-95B5-45D2-9256-8A28D3987FDE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{053278DE-F22D-4699-B7F5-4134FABC4F9C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\DataAccess.csproj", "{053278DE-F22D-4699-B7F5-4134FABC4F9C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

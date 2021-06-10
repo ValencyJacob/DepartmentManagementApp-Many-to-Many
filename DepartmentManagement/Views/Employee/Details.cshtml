@@ -6,13 +6,28 @@
 <div class="container">
 
     <div class="card">
-        <img class="card-img-top" src="@Model.Employee.ImageUrl" alt="Card image cap">
+
+        @if (Model.Employee.ImageUrl != null)
+        {
+            <img class="card-img-top" style="width:300px;height:300px;" src="@Model.Employee.ImageUrl" alt="Card image cap">
+        }
+        else
+        {
+            <img class="card-img-top" style="width:300px;height:300px;" src="~/images/employee/emp.jpg" alt="Card image cap">
+        }
+
         <div class="card-header">
             <h5>
                 @Model.Employee.FirstName @Model.Employee.MiddleName @Model.Employee.LastName
             </h5>
             <p>
+                @Model.Employee.IIN
+            </p>
+            <p>
                 @Model.Employee.Phone
+            </p>
+            <p>
+                @Model.Employee.MobilePhone
             </p>
             <p>
                 @Model.Employee.Email
@@ -46,7 +61,7 @@
         </a>
     }
 
-    <a asp-action="Index" class="btn btn-primary">
+    <a asp-action="AllEmployees" class="btn btn-primary">
         Back
     </a>
 

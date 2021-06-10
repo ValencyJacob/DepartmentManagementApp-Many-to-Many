@@ -14,11 +14,18 @@ namespace Models
 
         [Required]
         public string LastName { get; set; }
+
+        [Required]
+        public string IIN { get; set; }
+
         public string ImageUrl { get; set; }
 
         [Required]
         [DataType(DataType.PhoneNumber)]
         public string Phone { get; set; }
+
+        [Required]
+        public string MobilePhone { get; set; }
 
         [Required]
         [EmailAddress]

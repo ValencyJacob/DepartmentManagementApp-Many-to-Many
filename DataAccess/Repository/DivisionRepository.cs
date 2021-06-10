@@ -151,7 +151,7 @@ namespace DataAccess.Repository
 
             model.DivisionEmployeeListDropDown = tempEmployeesList.Select(x => new SelectListItem
             {
-                Text = $"{x.FirstName + " " + x.LastName}",
+                Text = $"{x.FirstName + " " + x.MiddleName}",
                 Value = x.Id.ToString()
             });
 

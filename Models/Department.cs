@@ -17,6 +17,10 @@ namespace Models
         public string Address { get; set; }
 
         [Required]
+        [EmailAddress]
+        public string EmailAddress { get; set; }
+
+        [Required]
         [DataType(DataType.PhoneNumber)]
         public string MainPhone { get; set; }
 

@@ -12,6 +12,9 @@ namespace Models
         [Required]
         public int CabinetNumber { get; set; }
 
+        [Required]
+        public int PhoneNumber { get; set; }
+
         public int DepartmentId { get; set; }
         public Department Department { get; set; }
     }
