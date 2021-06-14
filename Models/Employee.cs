@@ -12,7 +12,6 @@ namespace Models
         [Required]
         public string MiddleName { get; set; }
 
-        [Required]
         public string LastName { get; set; }
 
         [Required]
