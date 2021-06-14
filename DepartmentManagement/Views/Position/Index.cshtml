@@ -5,11 +5,11 @@
 <div class="border p-4 bg-white">
     <div class="row">
         <div class="col-9">
-            <h2 class="text-info"> Positions </h2>
+            <h2 class="text-info"> Должности </h2>
         </div>
 
         <div class="col-3 text-right">
-            <a asp-action="Upsert" class="btn btn-info form-control"> Add </a>
+            <a asp-action="Upsert" class="btn btn-info form-control"> Добавить </a>
         </div>
     </div>
     <div>
@@ -18,7 +18,7 @@
             <table class="table table-striped border">
                 <tr class="table-secondary">
                     <th>
-                        Positions
+                        Должности
                     </th>
                     <th></th>
                 </tr>
@@ -30,14 +30,14 @@
                         </td>
                         <td>
                             <a class="btn btn-primary text-white" asp-action="Upsert" asp-route-Id="@item.Id">
-                                Edit
+                                Редактировать
                             </a>
                             <a class="btn btn-primary text-white" asp-action="Details" asp-route-Id="@item.Id">
-                                Details
+                                Детали
                             </a>
                             <a class="btn btn-danger text-white" asp-action="Delete" asp-route-Id="@item.Id"
                                onclick="return confirm('Подтвердите удаление:')">
-                                Delete
+                                Удалить
                             </a>
                         </td>
                     </tr>

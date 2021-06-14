@@ -1,82 +1,98 @@
-﻿@model IEnumerable<Division>
+﻿@model ReflectionIT.Mvc.Paging.PagingList<Division>
 
 <br />
 <br />
 <div class="p-4 bg-white">
+
+    <form method="get" class="form-inline m-2">
+        <input name="filter" class="form-control" placeholder="Название департамента..." value="@Model.RouteValue["Filter"]" />
+        <button type="submit" class="btn btn-success ml-1">
+            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+            Пойск
+        </button>
+        <a class="btn btn-danger ml-1" asp-action="Index">
+            Обновить
+        </a>
+    </form>
+
     <div class="row">
         <div class="col-9">
-            <h2 class="text-info"> Division </h2>
+            <h2 class="text-info"> Отделы </h2>
         </div>
         @if (User.IsInRole(Common.AdminRole))
         {
             <div class="col-3 text-right">
-                <a asp-action="Upsert" class="btn btn-info form-control"> Add </a>
+                <a asp-action="Upsert" class="btn btn-info form-control"> Добавить </a>
             </div>
         }
     </div>
     <div>
         @if (Model.Count() > 0)
         {
-            <div class="row pb-5">
-                @foreach (var item in Model.OrderByDescending(x => x.Id))
-                {
-                    <div class="col-lg-4 col-md-9 mb-4">
-                        <div class="card text-black-50">
-
-                            <div class="card-header">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">
+                            Департамент:
+                        </th>
+                        <th scope="col">
+                            Отдел:
+                        </th>
+                        <th scope="col">
+                            Кабинет:
+                        </th>
+                        <th scope="col">
+                            Тел.номер:
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.OrderByDescending(x => x.Id))
+                    {
+                        <tr>
+                            <th scope="row">
                                 @if (item.Department != null)
                                 {
-                                    <h5>Department: 
-                                        <span>
-                                            @item.Department.Name
-                                        </span>
-                                    </h5>
+                                    @item.Department.Name
                                 }
-                                <p>@item.Name</p>
-                            </div>
-
-                            <div class="card-body">
-                                <h5>
-                                    Cabinet number:
-                                    <span>
-                                        @item.CabinetNumber
-                                    </span>
-                                </h5>
-                                <h5>
-                                    Phone number:
-                                    <span>
-                                        @item.PhoneNumber
-                                    </span>
-                                </h5>
-                            </div>
-
-                            <div class="card-footer">
-
+                            </th>
+                            <td>
+                                @item.Name
+                            </td>
+                            <td>
+                                @item.CabinetNumber
+                            </td>
+                            <td>
+                                @item.PhoneNumber
+                            </td>
+                            <td>
                                 @if (User.IsInRole(Common.AdminRole))
                                 {
-                                    <a class="btn btn-primary text-white" asp-action="Upsert" asp-route-Id="@item.Id">
-                                        Edit
+                                    <a class="btn btn-warning text-white" asp-action="Upsert" asp-route-Id="@item.Id">
+                                        Редактировать
                                     </a>
                                     <a class="btn btn-danger text-white" asp-action="Delete" asp-route-Id="@item.Id"
                                        onclick="return confirm('Подтвердите удаление:')">
-                                        Delete
+                                        Удалить
                                     </a>
                                 }
 
                                 <a class="btn btn-primary text-white" asp-action="Details" asp-route-Id="@item.Id">
-                                    Details
+                                    Детали
                                 </a>
-
-                            </div>
-
-                        </div>
-                    </div>
-                }
-            </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         }
         else
         {
             <p>No data exists...</p>
         }
     </div>
+    <nav aria-label="Suppliers navigation example">
+        <h5>@await this.Component.InvokeAsync("Pager", new { pagingList = this.Model })</h5>
+    </nav>
 </div>

@@ -6,6 +6,9 @@ using Models.ViewModels;
 using DataAccess;
 using DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Authorization;
+using ReflectionIT.Mvc.Paging;
+using Microsoft.AspNetCore.Routing;
+
 
 namespace DepartmentManagement.Controllers
 {
@@ -23,7 +26,7 @@ namespace DepartmentManagement.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string filter, int page = 1)
         {
             #region Legacy
             /*
@@ -33,9 +36,17 @@ namespace DepartmentManagement.Controllers
             */
             #endregion
 
-            var models = await _repository.GetAllAsync();
+            var models = await _repository.GetAllAsync(); //Only employees
 
-            return View(models);
+            if (!string.IsNullOrWhiteSpace(filter))
+            {
+                models = models.Where(d => d.Name.Contains(filter));
+            }
+
+            var model = PagingList.Create(models, 10, page);
+            model.RouteValue = new RouteValueDictionary { { "filter", filter } };
+
+            return View(model);
         }
 
         [HttpGet]

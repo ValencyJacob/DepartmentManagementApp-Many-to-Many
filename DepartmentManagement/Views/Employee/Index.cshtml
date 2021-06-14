@@ -5,7 +5,7 @@
 <div class="p-4 bg-white">
 
     <form method="get" class="form-inline m-2">
-        <input name="filter" class="form-control" placeholder="Введите фамилию сотрудника..." value="@Model.RouteValue["Filter"]" />
+        <input name="filter" class="form-control" placeholder="Фамилия сотрудника..." value="@Model.RouteValue["Filter"]" />
         <button type="submit" class="btn btn-success ml-1">
             <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
             Пойск
@@ -25,9 +25,6 @@
                 <a asp-action="Upsert" class="btn btn-info form-control"> Добавить </a>
             </div>
         }
-        <div class="col-3 text-right">
-            <a asp-action="index" class="btn btn-info form-control"> Назад </a>
-        </div>
     </div>
 
     <div>
@@ -86,10 +83,10 @@
                                             Удалить
                                         </a>*@
                                     <form asp-action="Delete" asp-route-Id="@item.Id" method="post">
-                                        <a class="btn btn-outline-warning" asp-action="Upsert" asp-route-Id="@item.Id">
+                                        <a class="btn btn-warning text-white" asp-action="Upsert" asp-route-Id="@item.Id">
                                             Редактировать
                                         </a>
-                                        <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Подтвердите удаление:')">
+                                        <button type="submit" class="btn btn-danger" onclick="return confirm('Подтвердите удаление:')">
                                             Удалить
                                         </button>
                                     </form>

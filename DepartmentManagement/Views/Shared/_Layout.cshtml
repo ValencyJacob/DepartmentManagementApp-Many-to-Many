@@ -29,6 +29,22 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Employee" asp-action="index">Сотрудники</a>
                         </li>
+
+                        @if (User.IsInRole(Common.AdminRole))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration-line:underline;">
+                                    Панель администратора
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" asp-controller="department" asp-action="index">Департамент</a>
+                                    <a class="dropdown-item" asp-controller="division" asp-action="index">Отдел</a>
+                                    <a class="dropdown-item" asp-controller="employee" asp-action="index">Сотрудники</a>
+                                    <a class="dropdown-item" asp-controller="position" asp-action="index">Должности</a>
+                                </div>
+                            </li>
+                        }
                     </ul>
                 </div>
                 <div class="float-right navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">

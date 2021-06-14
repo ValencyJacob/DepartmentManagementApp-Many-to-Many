@@ -1,7 +1,7 @@
 ﻿@model Department
 
 @{
-    var title = "Add";
+    var title = "Добавить";
 }
 
 <br />
@@ -13,7 +13,7 @@
         @if (Model.Id != 0)
         {
             //edit
-            title = "Edit";
+            title = "Редактировать";
         }
 
         <div class="col-12 border-bottom">
@@ -87,16 +87,16 @@
                 <div class="col-4 offset-4">
                     @if (Model.Id == 0)
                     {
-                        <button type="submit" class="btn btn-primary form-control">Create</button>
+                        <button type="submit" class="btn btn-primary form-control">Добавить</button>
                     }
                     else
                     {
-                        <button type="submit" class="btn btn-primary form-control">Update</button>
+                        <button type="submit" class="btn btn-primary form-control">Редактировать</button>
                     }
                 </div>
 
                 <div class="col-4">
-                    <a asp-action="Index" class="btn btn-success form-control">Back to List</a>
+                    <a asp-action="Index" class="btn btn-success form-control">Назад</a>
                 </div>
 
             </div>

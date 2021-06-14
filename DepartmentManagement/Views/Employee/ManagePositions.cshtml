@@ -12,24 +12,25 @@
                 <input type="hidden" asp-for="EmployeePositions.Employee_Id" />
 
                 <div class="col-4">
-                    <label asp-for="Employee.FirstName"></label>
+                    <label>Сотрудник</label>
                 </div>
                 <div class="col-8">
-                    <input type="text" asp-for="Employee.FirstName" class="form-control" disabled />
+                    <input type="text" placeholder="@Model.Employee.FirstName @Model.Employee.MiddleName @Model.Employee.LastName" 
+                           class="form-control" disabled />
                 </div>
                 <div class="col-4 pt-3">
                     <label asp-for="EmployeePositions.Position.Name"></label>
                 </div>
                 <div class="col-8">
-                    @Html.DropDownListFor(u => u.EmployeePositions.Position_Id, Model.EmployeePositionListDropDown, "--Select Position--",
+                    @Html.DropDownListFor(u => u.EmployeePositions.Position_Id, Model.EmployeePositionListDropDown, "--Все роли--",
                         new { @class = "form-control" })
                 </div>
 
                 <div class="col-4 offset-4">
-                    <button type="submit" class="btn btn-primary form-control">Add</button>
+                    <button type="submit" class="btn btn-success form-control">Добавить</button>
                 </div>
                 <div class="col-4">
-                    <a asp-action="Index" class="btn btn-success form-control">Back to List</a>
+                    <a asp-action="Index" class="btn btn-warning form-control">Назад</a>
                 </div>
             </form>
         </div>
@@ -39,22 +40,19 @@
                 <input type="hidden" asp-for="@Model.Employee.Id" />
                 <div class="row text-right">
                     <div class="col-12 text-right h4 text-primary">
-                        Employee Associated to this Division:
+                        Роли сотрудника:
                     </div>
                 </div>
                 @foreach (var item in Model.EmployeePositionList)
                 {
-
                     <div class="row pb-2">
                         <div class="col-8 text-right" style="font-size:23px;">@item.Position.Name</div>
                         <div class="col-4">
-                            <button asp-action="RemoveEmployees" type="submit" class="btn btn-danger form-control" asp-route-id="@item.Position_Id">Remove</button>
+                            <button asp-action="RemoveEmployees" type="submit" class="btn btn-danger form-control" asp-route-id="@item.Position_Id">Удалить роль</button>
                         </div>
                     </div>
                 }
             </form>
-
-
         </div>
     </div>
 

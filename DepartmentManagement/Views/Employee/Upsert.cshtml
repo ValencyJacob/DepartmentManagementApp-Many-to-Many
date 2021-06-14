@@ -1,7 +1,7 @@
 ﻿@model Employee
 
 @{
-    var title = "Add";
+    var title = "Добавить";
 }
 
 
@@ -15,7 +15,7 @@
             @if (Model.Id != 0)
             {
                 // Edit
-                title = "Edit";
+                title = "Редактировать";
                 <input type="hidden" asp-for="Id" />
             }
 
@@ -105,7 +105,7 @@
 
                 <div class="form-group row">
                     <div class="col-4">
-                        Image
+                        Фото
                     </div>
                     <div class="col-8">
                         <input type="file" name="files" id="uploadBox" multiple class="form-control" />
@@ -116,16 +116,20 @@
                     <div class="col-8 offset-4">
                         @if (Model.Id != 0)
                         {
-                            <button type="submit" class="btn btn-primary form-control">Edit</button>
+                            <button type="submit" class="btn btn-primary form-control">
+                                Редактировать
+                            </button>
                         }
                         else
                         {
                             <div class="row">
                                 <div class="col">
-                                    <button type="submit" onclick="return validateInput()" class="btn btn-sm btn-outline-success form-control">Add</button>
+                                    <button type="submit" onclick="return validateInput()" class="btn btn-sm btn-outline-success form-control">
+                                        Добавить
+                                    </button>
                                 </div>
                                 <div class="col">
-                                    <a asp-action="Index" class="btn btn-sm btn-outline-primary form-control text-center">Back</a>
+                                    <a asp-action="Index" class="btn btn-sm btn-outline-primary form-control text-center">Назад</a>
                                 </div>
                             </div>
                         }
